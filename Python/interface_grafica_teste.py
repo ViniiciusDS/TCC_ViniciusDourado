@@ -23,30 +23,6 @@ class InterfaceGrafica:
         self.resultados_text = tk.Text(self.root, height=10, width=62)
         self.resultados_text.grid(row=2, column=1, rowspan=8)
 
-        # Campos de Resultados Específicos
-        self.label_media_fb = tk.Label(
-            self.root, text="Média Execução Força Bruta:")
-        # Colocar na primeira coluna
-        self.label_media_fb.grid(row=10, column=1, sticky='w')
-
-        self.resultado_media_fb = tk.Entry(self.root, state='readonly')
-        # Colocar na primeira coluna
-        self.resultado_media_fb.grid(row=11, column=1, sticky='w')
-
-        self.label_media_ag = tk.Label(
-            self.root, text="Média Execução Algoritmo Genético:")
-        self.label_media_ag.grid(row=12, column=1, sticky='w')
-
-        self.resultado_media_ag = tk.Entry(self.root, state='readonly')
-        self.resultado_media_ag.grid(row=13, column=1, sticky='w')
-
-        self.label_media_sa = tk.Label(
-            self.root, text="Média Execução Simulated Annealing:")
-        self.label_media_sa.grid(row=14, column=1, sticky='w')
-
-        self.resultado_media_sa = tk.Entry(self.root, state='readonly')
-        self.resultado_media_sa.grid(row=15, column=1, sticky='w')
-
         # Componentes da Interface
         self.create_widgets()
 
@@ -175,41 +151,19 @@ class InterfaceGrafica:
         self.resultados_text.insert(tk.END, output)
         # Exibir resultados específicos
         resultados_dict = obter_resultados(output)
-        self.resultado_media_fb.config(state='normal')
-        self.resultado_media_fb.delete(0, tk.END)
-        self.resultado_media_fb.insert(0, str(resultados_dict['media_fb']))
-        self.resultado_media_fb.config(state='readonly')
 
-        self.resultado_media_ag.config(state='normal')
-        self.resultado_media_ag.delete(0, tk.END)
-        self.resultado_media_ag.insert(0, str(resultados_dict['media_ag']))
-        self.resultado_media_ag.config(state='readonly')
-
-        self.resultado_media_sa.config(state='normal')
-        self.resultado_media_sa.delete(0, tk.END)
-        self.resultado_media_sa.insert(0, str(resultados_dict['media_sa']))
-        self.resultado_media_sa.config(state='readonly')
+        # Exibir o tempo de execução
+        self.resultado_tempo_execucao.config(state='normal')
+        self.resultado_tempo_execucao.delete(0, tk.END)
+        self.resultado_tempo_execucao.insert(
+            0, resultados_dict['tempo_execucao'])
+        self.resultado_tempo_execucao.config(state='readonly')
 
 
 def obter_resultados(output):
     # Lógica para extrair resultados específicos do output
-    # ...
 
-    # Vamos supor que a saída contém linhas no formato "Média FB: 123.45"
-    media_fb = None
-    media_ag = None
-    media_sa = None
-
-    lines = output.split('\n')
-    for line in lines:
-        if line.startswith("Média FB:"):
-            media_fb = float(line.split(":")[1].strip())
-        elif line.startswith("Média AG:"):
-            media_ag = float(line.split(":")[1].strip())
-        elif line.startswith("Média SA:"):
-            media_sa = float(line.split(":")[1].strip())
-
-    return {'media_fb': media_fb, 'media_ag': media_ag, 'media_sa': media_sa}
+    return 0
 
 
 if __name__ == "__main__":
