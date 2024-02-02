@@ -1,0 +1,39 @@
+- 18 de maio - data final para entregar o corrigido final
+
+- dias 6 a 10 de maio - data para aprasentação
+
+- cap2 revisão da literatura
+- cap3 metodologia
+	-cap3.1 Entrevista Perguntas			FEVEREIRO
+	-
+- cap4 resultados da aplicação dos algoritmos 
+	-cap4.1 respostas da entrevistas quadro. 	MARÇO
+- Abril finalização
+
+- entrevistas transcristas apendice
+
+
+
+7 de fevereiro ->  Fazer sumário -> Roteiro Cap.2 ( Revisão da Literatura)
+			- Escrever em tópicos oq será escrito no capitulo 2
+			- basicamente o sumário
+			- 
+
+de 7 até 27 de fevereiro -> escrever a revisão da literatura
+				- tentar entregar dia 26 para correções 
+
+cap4 uma especie de espelho do capitulo3, cap3 pergunta -> cap4 resposta
+
+
+
+
+
+PROGRAMA
+Terminar de implementar resultados
+colocar uma especie de relócio para mostrar que programa está rodando
+
+
+
+
+
+
