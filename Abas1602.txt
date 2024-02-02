@@ -1,0 +1,5 @@
+https://console.cloud.google.com/freetrial/signup/tos?redirectPath=%2Fgoogle%2Fmaps-apis%2Fwelcome%3Fstep%3Djust_ask
+
+https://developers.google.com/maps/documentation/android-sdk/overview?authuser=1&hl=pt-br&section=start
+
+https://developers.google.com/maps/documentation/android-sdk/config?authuser=1&hl=pt-br

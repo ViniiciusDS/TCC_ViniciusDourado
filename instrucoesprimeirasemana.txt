@@ -1,0 +1,6 @@
+1° tarefa 
+
+- Controle de palavras chave
+- 3 niveis por palavra chave - A melhor, B medio, C fraco
+- Fazer uma resenha dos principais
+- 
