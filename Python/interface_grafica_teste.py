@@ -2,6 +2,7 @@
 import tkinter as tk
 from tkinter import filedialog
 import os  # Para abrir o arquivo de matriz
+import time  # Import the 'time' module
 
 
 class InterfaceGrafica:
@@ -22,6 +23,19 @@ class InterfaceGrafica:
         # Resultados
         self.resultados_text = tk.Text(self.root, height=10, width=62)
         self.resultados_text.grid(row=2, column=1, rowspan=8)
+
+        # Aba tempo de execução
+        self.label_tempo = tk.Label(self.root, text="Tempo de Execução:")
+        self.label_tempo.grid(row=18, column=1)
+
+        # Adicionando uma variável de controle para o tempo de execução
+        self.tempo_execucao = tk.StringVar()
+        self.tempo_execucao.set("0 segundos")
+
+        # Exibição dinâmica do tempo de execução
+        self.label_tempo_real = tk.Label(
+            self.root, textvariable=self.tempo_execucao)
+        self.label_tempo_real.grid(row=18, column=2)
 
         # Componentes da Interface
         self.create_widgets()
@@ -98,7 +112,11 @@ class InterfaceGrafica:
 
     def executar_codigo(self):
         # Lógica para executar os códigos com base nas opções selecionadas
-        # Certifique-se de adicionar as condições para as opções selecionadas
+
+        # Tratamento de erro para o arquivo de matriz
+        if not self.matriz_file_path.get():
+            tk.messagebox.showerror("Erro", "Selecione um arquivo de matriz.")
+            return
 
         # Obtendo os valores das opções
         matriz_file_path = self.matriz_file_path.get()  # Caminho do arquivo de matriz
@@ -115,6 +133,9 @@ class InterfaceGrafica:
             inicio_aumento = "0"
             fim_aumento = "0"
             num_cidades = int(self.num_cidades.get())  # Número de cidades
+
+        # Reiniciando o timer
+        start_time = time.time()
 
         # Convertendo para string
         executar_forca_bruta = str(self.executar_forca_bruta.get())
@@ -139,9 +160,15 @@ class InterfaceGrafica:
         # Capturar a saída do programa principal
         output = os.popen(command).read()
 
+        # Parando o timer e calculando o tempo total de execução
+        elapsed_time = time.time() - start_time
+
         # Exibir os resultados na interface
         self.resultados_text.delete(1.0, tk.END)  # Limpar o campo de texto
         self.resultados_text.insert(tk.END, output)
+
+        # Atualizando o timer de tempo de execução
+        self.tempo_execucao.set(f"{elapsed_time:.2f} segundos")
 
 
 def obter_resultados(output):
