@@ -86,15 +86,6 @@ class InterfaceGrafica:
             self.root, text="Simulated Annealing", variable=self.executar_simulated_annealing)
         checkbox_simulated_annealing.grid(row=17, column=0)
 
-        # Campos de Resultados
-        # self.label_resultados = tk.Label(
-        #    self.root, text="Resultados:", font=('Helvetica', 16, 'bold'))
-        # self.label_resultados.grid(row=5, column=1, sticky='w', pady=10)
-
-        # self.resultados_text = tk.Text(
-        #    self.root, height=10, width=40, wrap=tk.WORD)
-        # self.resultados_text.grid(row=6, column=1, columnspan=2, pady=10)
-
         # Botão Executar
         button_executar = tk.Button(
             self.root, text="Executar", command=self.executar_codigo)
@@ -149,15 +140,6 @@ class InterfaceGrafica:
         # Exibir os resultados na interface
         self.resultados_text.delete(1.0, tk.END)  # Limpar o campo de texto
         self.resultados_text.insert(tk.END, output)
-        # Exibir resultados específicos
-        resultados_dict = obter_resultados(output)
-
-        # Exibir o tempo de execução
-        self.resultado_tempo_execucao.config(state='normal')
-        self.resultado_tempo_execucao.delete(0, tk.END)
-        self.resultado_tempo_execucao.insert(
-            0, resultados_dict['tempo_execucao'])
-        self.resultado_tempo_execucao.config(state='readonly')
 
 
 def obter_resultados(output):
