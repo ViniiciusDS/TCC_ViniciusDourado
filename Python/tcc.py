@@ -13,8 +13,8 @@ import time
 
 def main():
     if len(sys.argv) != 9:
-        print("Uso: python tcc.py <arquivo_matriz> <num_cidades>"
-              " <incrementar_cidades> <exec_forca_bruta>"
+        print("Uso: python tcc.py <arquivo_matriz> <incrementar_cidades>"
+              " <num_cidades> <exec_forca_bruta>"
               " <exec_alg_genetico> <exec_simulated_annealing>"
               " <inicio_aumento> <fim_aumento>")
         sys.exit(1)
@@ -39,8 +39,8 @@ def main():
 
     # Definir variáveis de controle para cada método
     # 1 para aumentar, 0 para não aumentar
-    aumentar_cidades = sys.argv[3].lower() == 'true'
-    num_cidades_fixo = int(sys.argv[2])  # Número de cidades fixo
+    aumentar_cidades = sys.argv[2].lower() == 'true'
+    num_cidades_fixo = int(sys.argv[3])  # Número de cidades fixo
     # 1 para executar, 0 para não executar
     executar_forca_bruta = sys.argv[4].lower() == 'true'
     # 1 para executar, 0 para não executar

@@ -102,9 +102,20 @@ class InterfaceGrafica:
 
         # Obtendo os valores das opções
         matriz_file_path = self.matriz_file_path.get()  # Caminho do arquivo de matriz
-        num_cidades = int(self.num_cidades.get())  # Número de cidades
         incrementar_cidades = str(
             self.incrementar_cidades.get())  # Aumentar cidades
+
+        if self.incrementar_cidades.get():
+            num_cidades = "0"
+            inicio_aumento = int(self.num_cidades_inicio.get()
+                                 ) if incrementar_cidades else 0
+            fim_aumento = int(self.num_cidades_fim.get()
+                              ) if incrementar_cidades else 0
+        else:
+            inicio_aumento = "0"
+            fim_aumento = "0"
+            num_cidades = int(self.num_cidades.get())  # Número de cidades
+
         # Convertendo para string
         executar_forca_bruta = str(self.executar_forca_bruta.get())
         # Convertendo para string
@@ -112,17 +123,13 @@ class InterfaceGrafica:
         # Convertendo para string
         executar_simulated_annealing = str(
             self.executar_simulated_annealing.get())
-        inicio_aumento = int(self.num_cidades_inicio.get()
-                             ) if incrementar_cidades else 0
-        fim_aumento = int(self.num_cidades_fim.get()
-                          ) if incrementar_cidades else 0
 
         # O programa principal deve receber parâmetros conforme necessário
         command = (
             'python tcc.py '
             f'{matriz_file_path} '
-            f'{num_cidades} '
             f'{incrementar_cidades} '
+            f'{num_cidades} '
             f'{executar_forca_bruta} '
             f'{executar_alg_genetico} '
             f'{executar_simulated_annealing} '
