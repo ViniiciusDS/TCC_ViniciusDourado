@@ -117,10 +117,6 @@ class InterfaceGrafica:
         fim_aumento = int(self.num_cidades_fim.get()
                           ) if incrementar_cidades else 0
 
-        # Lógica para executar os métodos com base nas opções selecionadas
-        # ...
-
-        # Exemplo: Executar o programa principal (substitua pela lógica real)
         # O programa principal deve receber parâmetros conforme necessário
         command = (
             'python tcc.py '
@@ -133,7 +129,6 @@ class InterfaceGrafica:
             f'{inicio_aumento} '
             f'{fim_aumento} '
         )
-        # os.system(command)
         # Capturar a saída do programa principal
         output = os.popen(command).read()
 
