@@ -126,9 +126,9 @@ class InterfaceGrafica:
         if self.incrementar_cidades.get():
             num_cidades = "0"
             inicio_aumento = int(self.num_cidades_inicio.get()
-                                 ) if incrementar_cidades else 0
+                                 )
             fim_aumento = int(self.num_cidades_fim.get()
-                              ) if incrementar_cidades else 0
+                              )
         else:
             inicio_aumento = "0"
             fim_aumento = "0"
@@ -169,6 +169,10 @@ class InterfaceGrafica:
 
         # Atualizando o timer de tempo de execução
         self.tempo_execucao.set(f"{elapsed_time:.2f} segundos")
+
+    def mostrar_graficos(self):
+        # Lógica para mostrar os gráficos usando matplotlib
+        return 0
 
 
 def obter_resultados(output):

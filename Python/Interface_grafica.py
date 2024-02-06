@@ -1,87 +1,133 @@
 import tkinter as tk
+from tkinter import ttk
 from tkinter import filedialog
-import os
-import subprocess
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from threading import Thread
+import numpy as np
+import pandas as pd
+from scipy.stats import ttest_rel
+from forca_bruta import forcabruta
+from alggenetico import alggenetico
+from simulatedAnnealing import simulated_annealing
 
 
-class InterfaceGrafica:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("TCC Program")
+class TCCApp:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("TCC Program")
 
-        # Variáveis de controle
-        self.matriz_file_path = tk.StringVar()
-        self.num_cidades = tk.IntVar()
-        self.executar_forca_bruta = tk.BooleanVar(value=True)
-        self.executar_alg_genetico = tk.BooleanVar(value=True)
-        self.executar_simulated_annealing = tk.BooleanVar(value=True)
+        # Variables for GUI elements
+        self.selected_matrix = tk.StringVar()
+        self.num_cities = tk.StringVar()
+        self.run_forca_bruta = tk.IntVar()
+        self.run_alg_genetico = tk.IntVar()
+        self.run_simulated_annealing = tk.IntVar()
 
-        # Componentes da interface
+        # Create GUI elements
         self.create_widgets()
 
     def create_widgets(self):
-        # Frame principal
-        main_frame = tk.Frame(self.root)
-        main_frame.pack(padx=10, pady=10)
+        # Frame for input options
+        frame_inputs = ttk.Frame(self.master)
+        frame_inputs.pack(pady=10)
 
-        # Opção para escolher arquivo de matriz
-        label_matriz = tk.Label(
-            main_frame, text="Escolha o arquivo de matriz:")
-        label_matriz.grid(row=0, column=0, sticky="w")
+        # Label and Dropdown for selecting matrix
+        label_matrix = ttk.Label(frame_inputs, text="Select Matrix:")
+        label_matrix.grid(row=0, column=0, padx=5, pady=5)
+        dropdown_matrix = ttk.Combobox(
+            frame_inputs, textvariable=self.selected_matrix)
+        # Add your matrix names here
+        dropdown_matrix["values"] = ("Matrix1", "Matrix2")
+        dropdown_matrix.grid(row=0, column=1, padx=5, pady=5)
+        dropdown_matrix.set("Matrix1")
 
-        entry_matriz = tk.Entry(
-            main_frame, textvariable=self.matriz_file_path, width=30)
-        entry_matriz.grid(row=0, column=1, sticky="w")
+        # Label and Entry for number of cities
+        label_num_cities = ttk.Label(frame_inputs, text="Number of Cities:")
+        label_num_cities.grid(row=1, column=0, padx=5, pady=5)
+        entry_num_cities = ttk.Entry(
+            frame_inputs, textvariable=self.num_cities)
+        entry_num_cities.grid(row=1, column=1, padx=5, pady=5)
 
-        button_browse = tk.Button(
-            main_frame, text="Procurar", command=self.browse_file)
-        button_browse.grid(row=0, column=2)
+        # Checkbuttons for selecting methods to run
+        checkbutton_forca_bruta = ttk.Checkbutton(
+            frame_inputs, text="Run Força Bruta", variable=self.run_forca_bruta)
+        checkbutton_forca_bruta.grid(row=2, column=0, padx=5, pady=5)
+        checkbutton_alg_genetico = ttk.Checkbutton(
+            frame_inputs, text="Run Algoritmo Genético", variable=self.run_alg_genetico)
+        checkbutton_alg_genetico.grid(row=2, column=1, padx=5, pady=5)
+        checkbutton_simulated_annealing = ttk.Checkbutton(
+            frame_inputs, text="Run Simulated Annealing", variable=self.run_simulated_annealing)
+        checkbutton_simulated_annealing.grid(row=2, column=2, padx=5, pady=5)
 
-        # Número de cidades
-        label_cidades = tk.Label(main_frame, text="Número de Cidades:")
-        label_cidades.grid(row=1, column=0, sticky="w")
+        # Button to start the calculations
+        button_run = ttk.Button(frame_inputs, text="Run",
+                                command=self.run_calculations)
+        button_run.grid(row=3, column=0, columnspan=3, pady=10)
 
-        entry_cidades = tk.Entry(main_frame, textvariable=self.num_cidades)
-        entry_cidades.grid(row=1, column=1, sticky="w")
+        # Frame for displaying results
+        frame_results = ttk.Frame(self.master)
+        frame_results.pack(pady=10)
 
-        # Métodos a serem executados
-        label_metodos = tk.Label(
-            main_frame, text="Métodos a serem executados:")
-        label_metodos.grid(row=2, column=0, sticky="w")
+        # Create a Figure to display matplotlib plot
+        self.figure = Figure(figsize=(6, 4), tight_layout=True)
+        self.subplot = self.figure.add_subplot(111)
+        self.subplot.set_xlabel("Number of Cities")
+        self.subplot.set_ylabel("Execution Time")
 
-        checkbox_forca_bruta = tk.Checkbutton(
-            main_frame, text="Força Bruta", variable=self.executar_forca_bruta)
-        checkbox_forca_bruta.grid(row=2, column=1, sticky="w")
+        # Create a canvas to embed the plot in tkinter
+        self.canvas = FigureCanvasTkAgg(self.figure, master=frame_results)
+        self.canvas_widget = self.canvas.get_tk_widget()
+        self.canvas_widget.pack()
 
-        checkbox_alg_genetico = tk.Checkbutton(
-            main_frame, text="Algoritmo Genético", variable=self.executar_alg_genetico)
-        checkbox_alg_genetico.grid(row=2, column=2, sticky="w")
+    def run_calculations(self):
+        # Get input values
+        selected_matrix = self.selected_matrix.get()
+        num_cities = int(self.num_cities.get())
+        run_forca_bruta = self.run_forca_bruta.get()
+        run_alg_genetico = self.run_alg_genetico.get()
+        run_simulated_annealing = self.run_simulated_annealing.get()
 
-        checkbox_simulated_annealing = tk.Checkbutton(
-            main_frame, text="Simulated Annealing", variable=self.executar_simulated_annealing)
-        checkbox_simulated_annealing.grid(row=2, column=3, sticky="w")
-
-        # Botão para executar
-        button_executar = tk.Button(
-            main_frame, text="Executar", command=self.executar_codigo)
-        button_executar.grid(row=3, column=0, columnspan=4, pady=10)
-
-    def browse_file(self):
-        file_path = filedialog.askopenfilename(
-            filetypes=[("Arquivos de Texto", "*.txt")])
-        self.matriz_file_path.set(file_path)
-
-    def executar_codigo(self):
-        # Lógica para executar os códigos com base nas opções selecionadas
+        # TODO: Load matrices and execute the selected methods
         # ...
-        # Exemplo: Chamada do arquivo principal
-        command = f"python tcc.py {self.matriz_file_path.get()} {self.num_cidades.get()} " \
-                  f"{int(self.executar_forca_bruta.get())} {int(self.executar_alg_genetico.get())} " \
-                  f"{int(self.executar_simulated_annealing.get())}"
-        subprocess.run(command, shell=True)
+
+        # For demonstration purposes, let's assume you have results as below
+        num_cities_vec = np.arange(4, 12)
+        # Replace this with your actual results
+        tab_resultados_tempo = np.random.rand(8, 3)
+
+        # Update the plot
+        self.update_plot(num_cities_vec, tab_resultados_tempo)
+
+    def update_plot(self, num_cities_vec, tab_resultados_tempo):
+        self.subplot.clear()
+
+        # Plotting execution time for each method
+        if self.run_forca_bruta.get():
+            self.subplot.plot(
+                num_cities_vec, tab_resultados_tempo[:, 0], '-o', label='Força Bruta', linewidth=5)
+        if self.run_alg_genetico.get():
+            self.subplot.plot(
+                num_cities_vec, tab_resultados_tempo[:, 1], '-o', label='Algoritmo Genético', linewidth=5)
+        if self.run_simulated_annealing.get():
+            self.subplot.plot(
+                num_cities_vec, tab_resultados_tempo[:, 2], '-o', label='Simulated Annealing', linewidth=5)
+
+        # Update the legend, labels, etc.
+        self.subplot.set_xlabel("Number of Cities")
+        self.subplot.set_ylabel("Execution Time")
+        self.subplot.legend(loc='upper left')
+        self.subplot.grid(True)
+
+        # Draw the updated plot on the canvas
+        self.canvas.draw()
+
+
+def main():
+    root = tk.Tk()
+    app = TCCApp(root)
+    root.mainloop()
 
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = InterfaceGrafica(root)
-    root.mainloop()
+    main()
