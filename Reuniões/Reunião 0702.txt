@@ -1,0 +1,33 @@
+
+tomar cuidado com gerundio
+
+- Titulo -> otimização  em vez de otimizando
+
+nome -> abreviar fernando deixar ferreyra
+	francisco granziera Junior
+	leonimer flávio de melo
+
+
+SUMARIO ->	motivação e justificativa juntos
+		Objetivo Geral			->	Realicionado com o titulo
+							1.3 Objetivos 1.3.1 Objetivo Geral	1.3.1 Objetivos Específicos
+							Objetivos especificos conversam com a metodologia, exemplo estudo de interface gráfica python, estudo sobre algoritmo genético em 3 e 5
+		Organização do Trabalho 	->	Fugir do genérico e resumido
+		
+		2.1 trocar com 2.2
+		2.3.1 História 
+		2.3.3 Algoritmos Genéticos 	->	
+		
+		Utilizar palavras de ação
+		3.1 Utilização dos algoritmos
+		3.2 Avaliação do desempenho computacional
+		3.3 Realização dos Ajustes/Refinamento nos Modelos
+		3.4 Desenvolvimento do Software ->	3.4.1 e 3.4.2 colocar em portugues oq seria e entre parentese em inglês exemplo interface grafica (frontend) funcionamento estrutural (backend)
+
+		
+		4.1 Resultados da avaliação computacional
+		4.2 Resultados após os ajustes dos algoritmos
+		4.3 Funcionamento do Aplicativo desenvolvido em Python
+		
+
+		5.1 Sugestões de Trabalhos Futuros 

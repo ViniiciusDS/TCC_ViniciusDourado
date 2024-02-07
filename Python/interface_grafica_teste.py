@@ -4,6 +4,8 @@ from tkinter import filedialog
 import os  # Para abrir o arquivo de matriz
 import time  # Import the 'time' module
 
+global resultados_finais
+
 
 class InterfaceGrafica:
     def __init__(self, root):

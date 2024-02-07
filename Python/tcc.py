@@ -177,6 +177,7 @@ def main():
 
     # Exibe o Resultado final
     resultados_finais = []
+
     for i, metodo in enumerate(metodos):
         media_tempo = Resultados_Final_tempo[i]
         desvio_padrao_tempo = np.std(Tab_Resultados_tempo[:, i])
@@ -185,12 +186,12 @@ def main():
             'media_tempo': media_tempo,
             'desvio_padrao_tempo': desvio_padrao_tempo
         })
-    # for i, metodo in enumerate(metodos):
-    #    print(
-    #        f'Média dos tempos das simulações do Método {metodo}:',
-    #        Resultados_Final_tempo[i], 'segundos')
-    #    print(f'Desvio padrão dos tempos das simulações, {metodo}:', np.std(
-    #        Tab_Resultados_tempo[:, i]), 'segundos')
+    for i, metodo in enumerate(metodos):
+        print(
+            f'Média dos tempos das simulações do Método {metodo}:',
+            Resultados_Final_tempo[i], 'segundos')
+        print(f'Desvio padrão dos tempos das simulações, {metodo}:', np.std(
+            Tab_Resultados_tempo[:, i]), 'segundos')
 
     # Exibe o tempo total de execução do programa
     tic_total = time.time() - tic_total
