@@ -31,6 +31,33 @@ class InterfaceGrafica:
         self.label_tempo = tk.Label(self.root, text="Tempo de Execução:")
         self.label_tempo.grid(row=18, column=1)
 
+        # Aba Menor Rota Força Bruta
+        self.label_menor_rota_fb = tk.Label(
+            self.root, text="Menor Rota Força Bruta:")
+        self.label_menor_rota_fb.grid(row=5, column=3)
+
+        # Aba Menor Rota Algoritmo Genético
+        self.label_menor_rota_ag = tk.Label(
+            self.root, text="Menor Rota Algoritmo Genético:")
+        self.label_menor_rota_ag.grid(row=7, column=3)
+
+        # Aba Menor Rota Simulated Annealing
+        self.label_menor_rota_sa = tk.Label(
+            self.root, text="Menor Rota Simulated Annealing:")
+        self.label_menor_rota_sa.grid(row=9, column=3)
+
+        # Adiciona uma variável de controle para a menor rota da força bruta
+        self.menor_rota_fb = tk.StringVar()
+        self.menor_rota_fb.set("[0]")
+
+        # Adiciona uma variável de controle para a menor rota do algoritmo genético
+        self.menor_rota_ag = tk.StringVar()
+        self.menor_rota_ag.set("[0]")
+
+        # Adiciona uma variável de controle para a menor rota do simulated annealing
+        self.menor_rota_sa = tk.StringVar()
+        self.menor_rota_sa.set("[0]")
+
         # Adicionando uma variável de controle para o tempo de execução
         self.tempo_execucao = tk.StringVar()
         self.tempo_execucao.set("0 segundos")
@@ -48,6 +75,21 @@ class InterfaceGrafica:
         self.label_desvio_padrao_fb = tk.Label(
             self.root, textvariable=self.desvio_padrao_fb)
         self.label_desvio_padrao_fb.grid(row=19, column=2)
+
+        # Exibição dinâmica da menor rota da força bruta
+        self.label_menor_rota_fb_real = tk.Label(
+            self.root, textvariable=self.menor_rota_fb)
+        self.label_menor_rota_fb_real.grid(row=6, column=3)
+
+        # Exibição dinâmica da menor rota do algoritmo genético
+        self.label_menor_rota_ag_real = tk.Label(
+            self.root, textvariable=self.menor_rota_ag)
+        self.label_menor_rota_ag_real.grid(row=8, column=3)
+
+        # Exibição dinâmica da menor rota do simulated annealing
+        self.label_menor_rota_sa_real = tk.Label(
+            self.root, textvariable=self.menor_rota_sa)
+        self.label_menor_rota_sa_real.grid(row=10, column=3)
 
         # Componentes da Interface
         self.create_widgets()
@@ -158,31 +200,48 @@ class InterfaceGrafica:
         # O programa principal deve receber parâmetros conforme necessário
 
         # Capturar a saída do programa principal
-        # output = os.popen(command).read()
-        output1 = calcute_metodos_param(matriz_file_path, incrementar_cidades, num_cidades,
-                                        executar_forca_bruta, executar_alg_genetico,
-                                        executar_simulated_annealing, inicio_aumento, fim_aumento)
+        resultados_tcc = calcute_metodos_param(matriz_file_path, incrementar_cidades, num_cidades,
+                                               executar_forca_bruta, executar_alg_genetico,
+                                               executar_simulated_annealing, inicio_aumento,
+                                               fim_aumento)
 
         # Parando o timer e calculando o tempo total de execução
         elapsed_time = time.time() - start_time
 
         # Exibir os resultados na interface
-        self.resultados_text.delete(1.0, tk.END)  # Limpar o campo de texto
-        self.resultados_text.insert(tk.END, output1)
+        for metodo, dados in resultados_tcc.items():
+            self.resultados_text.insert(
+                tk.END, f"{metodo}:\n")
+            self.resultados_text.insert(
+                tk.END, f"Média do Tempo: {dados['media_tempo']} segundos\n")
+            self.resultados_text.insert(
+                tk.END, f"Desvio Padrão do Tempo: {dados['desvio_padrao_tempo']} segundos\n\n")
+
+        # Atualizando o desvio padrão da força bruta
+        self.desvio_padrao_fb.set(
+            f"{resultados_tcc['Força Bruta']['desvio_padrao_tempo']:.2f} segundos")
+
+        # Atualizando a menor rota da força bruta
+        atualizar_rotas(self, resultados_tcc)
 
         # Atualizando o timer de tempo de execução
         self.tempo_execucao.set(f"{elapsed_time:.2f} segundos")
-
-        # Atualizazndo o timer de desvio padrão da força bruta
-        self.desvio_padrao_fb.set(f"{output1[1]:.2f} segundos")
 
     def mostrar_graficos(self):
         # Lógica para mostrar os gráficos usando matplotlib
         return 0
 
 
-def obter_resultados(output):
-    # Lógica para extrair resultados específicos do output
+def atualizar_rotas(self, resultados):
+    # Lógica para atualizar as rotas na interface
+    self.menor_rota_fb.set(
+        f"{resultados['Força Bruta']['Menor Rota']}")
+
+    self.menor_rota_ag.set(
+        f"{resultados['Algoritmo Genético']['Menor Rota']}")
+
+    self.menor_rota_sa.set(
+        f"{resultados['Simulated Annealing']['Menor Rota']}")
 
     return 0
 

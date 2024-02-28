@@ -92,10 +92,10 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
 
         # Executar Algoritmo Genético se a variável de controle estiver definida como 1
         if executar_alg_genetico:
-            resultados_algoritmo_getenico = alggenetico(
+            resultados_algoritmo_genetico = alggenetico(
                 MatrizDistTrab, tam_Pop_ini_AG, tam_gera_AG)
-            tempoAG = resultados_algoritmo_getenico['tempoAG']
-            menordistAG = resultados_algoritmo_getenico['menorDistancia']
+            tempoAG = resultados_algoritmo_genetico['tempoAG']
+            menordistAG = resultados_algoritmo_genetico['menorDistancia']
             Tab_Resultados_tempo[sim, 1] = tempoAG
             Tab_Resultados_dist[sim, 1] = menordistAG
 
@@ -197,6 +197,27 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
     list_prints.append(
         f'Tempo total de execução do programa: {tic_total} segundos')
 
+    # Cria o Dicionário dos resultados
+    resultados_para_interface = {
+        "Força Bruta": {
+            "media_tempo": Resultados_Final_tempo[0],
+            "desvio_padrao_tempo": np.std(Tab_Resultados_tempo[:, 0]),
+            "Menor Rota": resultados_forca_bruta['Rota_menor']
+        },
+        "Algoritmo Genético": {
+            "media_tempo": Resultados_Final_tempo[1],
+            "desvio_padrao_tempo": np.std(Tab_Resultados_tempo[:, 1]),
+            "Menor Rota": resultados_algoritmo_genetico['melhorRota']
+        },
+        "Simulated Annealing": {
+            "media_tempo": Resultados_Final_tempo[2],
+            "desvio_padrao_tempo": np.std(Tab_Resultados_tempo[:, 2]),
+            "Menor Rota": resultados_SA['melhorRota']
+        }
+
+
+    }
+
     if ttest_control == 1:
         if execute_control >= 2:
             # Realize um teste t de Student pareado (duas amostras relacionadas)
@@ -222,7 +243,7 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
             else:
                 print('Não rejeita a hipótese nula: Não há evidência suficiente para concluir'
                       'que existe uma diferença significativa entre os métodos.')
-    return list_prints
+    return resultados_para_interface
 
 
 if __name__ == '__main__':
