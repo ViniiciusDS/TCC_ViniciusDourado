@@ -1,8 +1,9 @@
 # Teste de interface para o TCC
 import tkinter as tk
 from tkinter import filedialog
-import os  # Para abrir o arquivo de matriz
+# import os  # Para abrir o arquivo de matriz
 import time  # Import the 'time' module
+from tcc import calcute_metodos_param  # Import tcc.py
 
 global resultados_finais
 
@@ -34,10 +35,19 @@ class InterfaceGrafica:
         self.tempo_execucao = tk.StringVar()
         self.tempo_execucao.set("0 segundos")
 
+        # Adicionando uma variável de controle para o desvio padrão da força bruta
+        self.desvio_padrao_fb = tk.StringVar()
+        self.desvio_padrao_fb.set("0 segundos")
+
         # Exibição dinâmica do tempo de execução
         self.label_tempo_real = tk.Label(
             self.root, textvariable=self.tempo_execucao)
         self.label_tempo_real.grid(row=18, column=2)
+
+        # Exibição dinâmica do desvio padrão da força bruta
+        self.label_desvio_padrao_fb = tk.Label(
+            self.root, textvariable=self.desvio_padrao_fb)
+        self.label_desvio_padrao_fb.grid(row=19, column=2)
 
         # Componentes da Interface
         self.create_widgets()
@@ -122,8 +132,7 @@ class InterfaceGrafica:
 
         # Obtendo os valores das opções
         matriz_file_path = self.matriz_file_path.get()  # Caminho do arquivo de matriz
-        incrementar_cidades = str(
-            self.incrementar_cidades.get())  # Aumentar cidades
+        incrementar_cidades = self.incrementar_cidades.get()  # Aumentar cidades
 
         if self.incrementar_cidades.get():
             num_cidades = "0"
@@ -140,37 +149,32 @@ class InterfaceGrafica:
         start_time = time.time()
 
         # Convertendo para string
-        executar_forca_bruta = str(self.executar_forca_bruta.get())
+        executar_forca_bruta = self.executar_forca_bruta.get()
         # Convertendo para string
-        executar_alg_genetico = str(self.executar_alg_genetico.get())
+        executar_alg_genetico = self.executar_alg_genetico.get()
         # Convertendo para string
-        executar_simulated_annealing = str(
-            self.executar_simulated_annealing.get())
+        executar_simulated_annealing = self.executar_simulated_annealing.get()
 
         # O programa principal deve receber parâmetros conforme necessário
-        command = (
-            'python tcc.py '
-            f'{matriz_file_path} '
-            f'{incrementar_cidades} '
-            f'{num_cidades} '
-            f'{executar_forca_bruta} '
-            f'{executar_alg_genetico} '
-            f'{executar_simulated_annealing} '
-            f'{inicio_aumento} '
-            f'{fim_aumento} '
-        )
+
         # Capturar a saída do programa principal
-        output = os.popen(command).read()
+        # output = os.popen(command).read()
+        output1 = calcute_metodos_param(matriz_file_path, incrementar_cidades, num_cidades,
+                                        executar_forca_bruta, executar_alg_genetico,
+                                        executar_simulated_annealing, inicio_aumento, fim_aumento)
 
         # Parando o timer e calculando o tempo total de execução
         elapsed_time = time.time() - start_time
 
         # Exibir os resultados na interface
         self.resultados_text.delete(1.0, tk.END)  # Limpar o campo de texto
-        self.resultados_text.insert(tk.END, output)
+        self.resultados_text.insert(tk.END, output1)
 
         # Atualizando o timer de tempo de execução
         self.tempo_execucao.set(f"{elapsed_time:.2f} segundos")
+
+        # Atualizazndo o timer de desvio padrão da força bruta
+        self.desvio_padrao_fb.set(f"{output1[1]:.2f} segundos")
 
     def mostrar_graficos(self):
         # Lógica para mostrar os gráficos usando matplotlib

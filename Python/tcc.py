@@ -1,5 +1,5 @@
 """Código main do TCC, afim de realizar testes estatísticos e gráficos"""
-import sys  # Importar a biblioteca sys para obter argumentos de linha de comando
+# import sys  # Importar a biblioteca sys para obter argumentos de linha de comando
 import numpy as np  # Importar a biblioteca numpy
 import pandas as pd  # Importar a biblioteca pandas
 import matplotlib.pyplot as plt  # Importar a biblioteca matplotlib
@@ -9,15 +9,12 @@ from alggenetico import alggenetico  # Importar a função alggenetico
 # Importar a função simulatedAnnealing
 from simulatedAnnealing import simulated_annealing
 import time
+import argparse
 
 
-def main():
-    if len(sys.argv) != 9:
-        print("Uso: python tcc.py <arquivo_matriz> <incrementar_cidades>"
-              " <num_cidades> <exec_forca_bruta>"
-              " <exec_alg_genetico> <exec_simulated_annealing>"
-              " <inicio_aumento> <fim_aumento>")
-        sys.exit(1)
+def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_cidades: int,
+                          exec_forca_bruta: bool, exec_alg_genetico: bool,
+                          exec_simulated_annealing: bool, inicio_aumento: int, fim_aumento: int):
 
     # Inicializar o tempo total de execução do programa
     tic_total = time.time()
@@ -30,7 +27,7 @@ def main():
     # TempMatriz = pd.DataFrame(np.zeros((16, 16)))
 
     # Ler o arquivo de texto
-    data_dist = pd.read_csv(sys.argv[1], delimiter='\t')
+    data_dist = pd.read_csv(arquivo_matriz, delimiter='\t')
     # data_temp = pd.read_csv('MatrizTempProfessor.txt', delimiter='\t')
 
     # Converter os dados em uma matriz de banco de dados
@@ -39,14 +36,14 @@ def main():
 
     # Definir variáveis de controle para cada método
     # 1 para aumentar, 0 para não aumentar
-    aumentar_cidades = sys.argv[2].lower() == 'true'
-    num_cidades_fixo = int(sys.argv[3])  # Número de cidades fixo
+    aumentar_cidades = incrementar_cidades
+    num_cidades_fixo = num_cidades  # Número de cidades fixo
     # 1 para executar, 0 para não executar
-    executar_forca_bruta = sys.argv[4].lower() == 'true'
+    executar_forca_bruta = exec_forca_bruta
     # 1 para executar, 0 para não executar
-    executar_alg_genetico = sys.argv[5].lower() == 'true'
+    executar_alg_genetico = exec_alg_genetico
     # 1 para executar, 0 para não executar
-    executar_simulated_annealing = sys.argv[6].lower() == 'true'
+    executar_simulated_annealing = exec_simulated_annealing
     execute_control = executar_alg_genetico + executar_forca_bruta + \
         executar_simulated_annealing  # Variável de controle para o teste t de Student
     ttest_control = 0  # 1 para executar, 0 para não executar
@@ -62,8 +59,8 @@ def main():
 
     # Criação da Tabela de Resultados
     n_simulacoes = 8
-    if aumentar_cidades == 1:
-        num_cidades_vec = np.arange(int(sys.argv[7]), int(sys.argv[8])+1)
+    if aumentar_cidades:
+        num_cidades_vec = np.arange(inicio_aumento, fim_aumento+1)
         n_simulacoes = len(num_cidades_vec)
     else:
         num_cidades_vec = np.array([num_cidades_fixo] * n_simulacoes)
@@ -71,7 +68,7 @@ def main():
     Tab_Resultados_dist = np.zeros((n_simulacoes, 3))
 
     for sim in range(n_simulacoes):
-        if aumentar_cidades == 1:
+        if aumentar_cidades:
             N_cidades = num_cidades_vec[sim]  # Altera o número de cidades
         else:
             N_cidades = num_cidades_fixo  # Mantém o número de cidades fixo
@@ -86,7 +83,7 @@ def main():
         # MatrizTempTrab = TempMatriz.iloc[indi_random, indi_random].values
 
         # Executar Força Bruta se a variável de controle estiver definida como 1
-        if executar_forca_bruta == 1:
+        if executar_forca_bruta:
             resultados_forca_bruta = forcabruta(MatrizDistTrab)
             tempoFB = resultados_forca_bruta['tempoFB']
             menordistFB = resultados_forca_bruta['distanciamenor']
@@ -94,7 +91,7 @@ def main():
             Tab_Resultados_dist[sim, 0] = menordistFB
 
         # Executar Algoritmo Genético se a variável de controle estiver definida como 1
-        if executar_alg_genetico == 1:
+        if executar_alg_genetico:
             resultados_algoritmo_getenico = alggenetico(
                 MatrizDistTrab, tam_Pop_ini_AG, tam_gera_AG)
             tempoAG = resultados_algoritmo_getenico['tempoAG']
@@ -103,7 +100,7 @@ def main():
             Tab_Resultados_dist[sim, 1] = menordistAG
 
         # Executar Simulated Annealing se a variável de controle estiver definida como 1
-        if executar_simulated_annealing == 1:
+        if executar_simulated_annealing:
             resultados_SA = simulated_annealing(
                 MatrizDistTrab, temp_ini, taxa_resfri, num_int_SA)
             tempoSA = resultados_SA['tempo']
@@ -116,7 +113,7 @@ def main():
 
     # Crie um gráfico de linha para cada método
     plt.figure(figsize=(5, 5))
-    if aumentar_cidades == 1:
+    if aumentar_cidades:
         for i in range(3):
             plt.plot(
                 num_cidades_vec, Tab_Resultados_tempo[:, i], '-o', label=metodos[i], linewidth=5)
@@ -137,7 +134,7 @@ def main():
 
     # Crie um gráfico de linha para Algoritmo Genético e Simulated Annealing
     plt.figure(figsize=(5, 5))
-    if aumentar_cidades == 1:
+    if aumentar_cidades:
         plt.plot(num_cidades_vec,
                  Tab_Resultados_tempo[:, 1], '-o', label='Algoritmo Genético', linewidth=5)
         plt.plot(num_cidades_vec,
@@ -147,7 +144,7 @@ def main():
                  Tab_Resultados_tempo[:, 1], '-o', label='Algoritmo Genético', linewidth=5)
         plt.plot(range(1, n_simulacoes + 1),
                  Tab_Resultados_tempo[:, 2], '-o', label='Simulated Annealing', linewidth=5)
-    if aumentar_cidades == 1:
+    if aumentar_cidades:
         plt.xlabel('Número de Cidades', fontsize=20)
     else:
         plt.xlabel('Simulação', fontsize=20)
@@ -177,6 +174,7 @@ def main():
 
     # Exibe o Resultado final
     resultados_finais = []
+    list_prints = []
 
     for i, metodo in enumerate(metodos):
         media_tempo = Resultados_Final_tempo[i]
@@ -187,15 +185,17 @@ def main():
             'desvio_padrao_tempo': desvio_padrao_tempo
         })
     for i, metodo in enumerate(metodos):
-        print(
-            f'Média dos tempos das simulações do Método {metodo}:',
-            Resultados_Final_tempo[i], 'segundos')
-        print(f'Desvio padrão dos tempos das simulações, {metodo}:', np.std(
-            Tab_Resultados_tempo[:, i]), 'segundos')
+        list_prints.append(
+            f'Média dos tempos das simulações do Método \
+                {metodo}: {Resultados_Final_tempo[i]} segundos')
+        list_prints.append(
+            f'Desvio padrão dos tempos das simulações do Método \
+                  {metodo}: {np.std(Tab_Resultados_tempo[:, i])} segundos')
 
     # Exibe o tempo total de execução do programa
     tic_total = time.time() - tic_total
-    print('Tempo total de execução do programa:', tic_total, 'segundos')
+    list_prints.append(
+        f'Tempo total de execução do programa: {tic_total} segundos')
 
     if ttest_control == 1:
         if execute_control >= 2:
@@ -222,8 +222,28 @@ def main():
             else:
                 print('Não rejeita a hipótese nula: Não há evidência suficiente para concluir'
                       'que existe uma diferença significativa entre os métodos.')
-    return resultados_finais
+    return list_prints
 
 
-if __name__ == '__main__':  # Executar o programa principal
-    main()  # Chamar a função main()
+if __name__ == '__main__':
+    argparser = argparse.ArgumentParser(description='TCC Program')
+    argparser.add_argument('arquivo_matriz', type=str,
+                           help='Arquivo de matriz')
+    argparser.add_argument('incrementar_cidades',
+                           type=bool, help='Incrementar cidades')
+    argparser.add_argument('num_cidades', type=int, help='Número de cidades')
+    argparser.add_argument('exec_forca_bruta', type=bool,
+                           help='Executar Força Bruta')
+    argparser.add_argument('exec_alg_genetico', type=bool,
+                           help='Executar Algoritmo Genético')
+    argparser.add_argument('exec_simulated_annealing',
+                           type=bool, help='Executar Simulated Annealing')
+    argparser.add_argument('inicio_aumento', type=int,
+                           help='Início do aumento')
+    argparser.add_argument('fim_aumento', type=int, help='Fim do aumento')
+    args = argparser.parse_args()
+
+    # Executar o programa principal
+    calcute_metodos_param(args.arquivo_matriz, args.incrementar_cidades, args.num_cidades,
+                          args.exec_forca_bruta, args.exec_alg_genetico,
+                          args.exec_simulated_annealing, args.inicio_aumento, args.fim_aumento)
