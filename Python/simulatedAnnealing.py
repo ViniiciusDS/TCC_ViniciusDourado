@@ -7,9 +7,9 @@ def simulated_annealing(matriz_distancia, temperatura_inicial, taxa_resfriamento
     num_cidades = matriz_distancia.shape[0]
 
     # Gera a solução inicial aleatória
-    cidades_aleatorias = np.random.permutation(np.arange(1, num_cidades))
+    cidades_aleatorias = np.random.permutation(np.arange(2, num_cidades+1))
     # Solução inicial aleatória
-    melhor_rota = np.concatenate(([0], cidades_aleatorias, [0]))
+    melhor_rota = np.concatenate(([1], cidades_aleatorias, [1]))
     melhor_custo = calcular_custo_rota(melhor_rota, matriz_distancia)
 
     # Variáveis para parâmetro de comparação
@@ -57,8 +57,8 @@ def calcular_custo_rota(rota, matriz_distancia):
     for i in range(num_cidades):
         cidade_atual = rota[i]
         # Próxima cidade considerando rota circular
-        cidade_proxima = rota[(i + 1) % num_cidades]
-        custo += matriz_distancia[cidade_atual, cidade_proxima]
+        cidade_proxima = rota[(i+1) % num_cidades]
+        custo += matriz_distancia[cidade_atual-1, cidade_proxima-1]
 
     return custo
 
@@ -66,7 +66,7 @@ def calcular_custo_rota(rota, matriz_distancia):
 def gerar_nova_rota_vizinha(rota_atual):
     # Gera uma nova solução vizinha alterando aleatoriamente a solução atual
     num_cidades = len(rota_atual)
-    indice1, indice2 = np.random.choice(num_cidades, 2, replace=False)
+    indice1, indice2 = np.random.choice(range(1, num_cidades-1), 2, replace=False)
     nova_rota = rota_atual.copy()
     # Troca duas cidades aleatoriamente
     nova_rota[[indice1, indice2]] = nova_rota[[indice2, indice1]]

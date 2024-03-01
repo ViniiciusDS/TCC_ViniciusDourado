@@ -18,7 +18,7 @@ def Calc_Custo(DistMatriz, Populacao, TempMatriz):
     return Percurso
 
 
-"""Função para calcular a distância"""
+"""Função para calcular a distância (usada no AG)"""
 
 
 def Calc_Dist(DistMatriz, Populacao):

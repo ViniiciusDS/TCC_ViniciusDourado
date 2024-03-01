@@ -16,7 +16,7 @@ class InterfaceGrafica:
         # Variáveis de Controle
         self.num_cidades = tk.StringVar()
         self.matriz_file_path = tk.StringVar()
-        self.incrementar_cidades = tk.BooleanVar(value=True)
+        self.incrementar_cidades = tk.BooleanVar(value=False)
         self.executar_forca_bruta = tk.BooleanVar(value=True)
         self.executar_alg_genetico = tk.BooleanVar(value=True)
         self.executar_simulated_annealing = tk.BooleanVar(value=True)
@@ -62,19 +62,10 @@ class InterfaceGrafica:
         self.tempo_execucao = tk.StringVar()
         self.tempo_execucao.set("0 segundos")
 
-        # Adicionando uma variável de controle para o desvio padrão da força bruta
-        self.desvio_padrao_fb = tk.StringVar()
-        self.desvio_padrao_fb.set("0 segundos")
-
         # Exibição dinâmica do tempo de execução
         self.label_tempo_real = tk.Label(
             self.root, textvariable=self.tempo_execucao)
         self.label_tempo_real.grid(row=18, column=2)
-
-        # Exibição dinâmica do desvio padrão da força bruta
-        self.label_desvio_padrao_fb = tk.Label(
-            self.root, textvariable=self.desvio_padrao_fb)
-        self.label_desvio_padrao_fb.grid(row=19, column=2)
 
         # Exibição dinâmica da menor rota da força bruta
         self.label_menor_rota_fb_real = tk.Label(
@@ -216,10 +207,6 @@ class InterfaceGrafica:
                 tk.END, f"Média do Tempo: {dados['media_tempo']} segundos\n")
             self.resultados_text.insert(
                 tk.END, f"Desvio Padrão do Tempo: {dados['desvio_padrao_tempo']} segundos\n\n")
-
-        # Atualizando o desvio padrão da força bruta
-        self.desvio_padrao_fb.set(
-            f"{resultados_tcc['Força Bruta']['desvio_padrao_tempo']:.2f} segundos")
 
         # Atualizando a menor rota da força bruta
         atualizar_rotas(self, resultados_tcc)
