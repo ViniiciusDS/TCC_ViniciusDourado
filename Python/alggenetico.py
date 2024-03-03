@@ -19,6 +19,7 @@ def alggenetico(MatrizDistTrab, tam_Pop_ini, tam_gera):
     FilhosMae = np.zeros((4, (numCidades+1)))
     nmr_filhos = np.zeros(((tam_Pop_ini-2), (numCidades+1)))
     Percurso = np.zeros((tam_Pop_ini, tam_gera))
+    tx_mutacao = 0.1
 
     # Criando a população inicial
     for k in range(tam_Pop_ini):
@@ -58,18 +59,34 @@ def alggenetico(MatrizDistTrab, tam_Pop_ini, tam_gera):
                 palim = (num_filhos - 1) // 2
                 malim = (num_filhos + 1) // 2
 
-        # Criando os filhos por permutação
+        # Criando os filhos por permutação e aplicando mutação
         for pa in range(palim):
+            # Selecionado os indíces para a troca de cidades
             b = np.random.permutation(np.arange(1, numCidades))[:2]
             FilhosPai[pa, :] = Pai
             FilhosPai[pa, b[0]] = Pai[0, b[1]]
             FilhosPai[pa, b[1]] = Pai[0, b[0]]
 
+            # Aplicando a Mutação com base na probabilidade
+            if np.random.rand() < tx_mutacao:
+                c = np.random.choice(np.setdiff1d(
+                    np.arange(1, numCidades), b), size=2, replace=False)
+                FilhosPai[pa, c[0]] = Pai[0, c[1]]
+                FilhosPai[pa, c[1]] = Pai[0, c[0]]
+
         for ma in range(malim):
+            # Selecionado os indíces para a troca de cidades
             b = np.random.permutation(np.arange(1, numCidades))[:2]
             FilhosMae[ma, :] = Mae
             FilhosMae[ma, b[0]] = Mae[0, b[1]]
             FilhosMae[ma, b[1]] = Mae[0, b[0]]
+
+            # Aplicando a Mutação com base na probabilidade
+            if np.random.rand() < tx_mutacao:
+                c = np.random.choice(np.setdiff1d(
+                    np.arange(1, numCidades), b), size=2, replace=False)
+                FilhosMae[ma, c[0]] = Mae[0, c[1]]
+                FilhosMae[ma, c[1]] = Mae[0, c[0]]
 
         #   Formando a nova população
         Populacao = np.concatenate((Pai, Mae, FilhosPai, FilhosMae))
