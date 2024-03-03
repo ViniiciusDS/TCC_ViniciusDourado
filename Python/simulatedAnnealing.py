@@ -40,6 +40,9 @@ def simulated_annealing(matriz_distancia, temperatura_inicial, taxa_resfriamento
     # tempo_sa = time.process_time()
     tempo_sa = time.time() - tempo_sa
 
+    # Converte os elementos da rota para ponto flutuante
+    melhor_rota = melhor_rota.astype(float)
+
     # Preparando a saída da função
     sa_func = {}
     sa_func['tempo'] = tempo_sa
@@ -54,7 +57,7 @@ def calcular_custo_rota(rota, matriz_distancia):
     custo = 0
     num_cidades = len(rota)
 
-    for i in range(num_cidades):
+    for i in range(num_cidades-1):
         cidade_atual = rota[i]
         # Próxima cidade considerando rota circular
         cidade_proxima = rota[(i+1) % num_cidades]
@@ -66,7 +69,8 @@ def calcular_custo_rota(rota, matriz_distancia):
 def gerar_nova_rota_vizinha(rota_atual):
     # Gera uma nova solução vizinha alterando aleatoriamente a solução atual
     num_cidades = len(rota_atual)
-    indice1, indice2 = np.random.choice(range(1, num_cidades-1), 2, replace=False)
+    indice1, indice2 = np.random.choice(
+        range(1, num_cidades-1), 2, replace=False)
     nova_rota = rota_atual.copy()
     # Troca duas cidades aleatoriamente
     nova_rota[[indice1, indice2]] = nova_rota[[indice2, indice1]]

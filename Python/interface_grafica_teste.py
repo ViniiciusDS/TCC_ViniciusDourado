@@ -31,32 +31,38 @@ class InterfaceGrafica:
         self.label_tempo = tk.Label(self.root, text="Tempo de Execução:")
         self.label_tempo.grid(row=18, column=1)
 
-        # Aba Menor Rota Força Bruta
+        # Aba Menor Rota e km Força Bruta
         self.label_menor_rota_fb = tk.Label(
             self.root, text="Menor Rota Força Bruta:")
         self.label_menor_rota_fb.grid(row=5, column=3)
 
-        # Aba Menor Rota Algoritmo Genético
+        # Aba Menor Rota e km Algoritmo Genético
         self.label_menor_rota_ag = tk.Label(
             self.root, text="Menor Rota Algoritmo Genético:")
-        self.label_menor_rota_ag.grid(row=7, column=3)
+        self.label_menor_rota_ag.grid(row=8, column=3)
 
-        # Aba Menor Rota Simulated Annealing
+        # Aba Menor Rota e km Simulated Annealing
         self.label_menor_rota_sa = tk.Label(
             self.root, text="Menor Rota Simulated Annealing:")
-        self.label_menor_rota_sa.grid(row=9, column=3)
+        self.label_menor_rota_sa.grid(row=11, column=3)
 
-        # Adiciona uma variável de controle para a menor rota da força bruta
+        # Adiciona uma variável de controle para a menor rota e km da força bruta
         self.menor_rota_fb = tk.StringVar()
         self.menor_rota_fb.set("[0]")
+        self.km_fb = tk.StringVar()
+        self.km_fb.set("0")
 
-        # Adiciona uma variável de controle para a menor rota do algoritmo genético
+        # Adiciona uma variável de controle para a menor rota e km do algoritmo genético
         self.menor_rota_ag = tk.StringVar()
         self.menor_rota_ag.set("[0]")
+        self.km_ag = tk.StringVar()
+        self.km_ag.set("0")
 
-        # Adiciona uma variável de controle para a menor rota do simulated annealing
+        # Adiciona uma variável de controle para a menor rota e km do simulated annealing
         self.menor_rota_sa = tk.StringVar()
         self.menor_rota_sa.set("[0]")
+        self.km_sa = tk.StringVar()
+        self.km_sa.set("0")
 
         # Adicionando uma variável de controle para o tempo de execução
         self.tempo_execucao = tk.StringVar()
@@ -67,20 +73,29 @@ class InterfaceGrafica:
             self.root, textvariable=self.tempo_execucao)
         self.label_tempo_real.grid(row=18, column=2)
 
-        # Exibição dinâmica da menor rota da força bruta
+        # Exibição dinâmica da menor rota e km da força bruta
         self.label_menor_rota_fb_real = tk.Label(
             self.root, textvariable=self.menor_rota_fb)
         self.label_menor_rota_fb_real.grid(row=6, column=3)
+        self.label_km_fb_real = tk.Label(
+            self.root, textvariable=self.km_fb)
+        self.label_km_fb_real.grid(row=7, column=3)
 
-        # Exibição dinâmica da menor rota do algoritmo genético
+        # Exibição dinâmica da menor rota e km do algoritmo genético
         self.label_menor_rota_ag_real = tk.Label(
             self.root, textvariable=self.menor_rota_ag)
-        self.label_menor_rota_ag_real.grid(row=8, column=3)
+        self.label_menor_rota_ag_real.grid(row=9, column=3)
+        self.label_km_ag_real = tk.Label(
+            self.root, textvariable=self.km_ag)
+        self.label_km_ag_real.grid(row=10, column=3)
 
-        # Exibição dinâmica da menor rota do simulated annealing
+        # Exibição dinâmica da menor rota e km do simulated annealing
         self.label_menor_rota_sa_real = tk.Label(
             self.root, textvariable=self.menor_rota_sa)
-        self.label_menor_rota_sa_real.grid(row=10, column=3)
+        self.label_menor_rota_sa_real.grid(row=12, column=3)
+        self.label_km_sa_real = tk.Label(
+            self.root, textvariable=self.km_sa)
+        self.label_km_sa_real.grid(row=13, column=3)
 
         # Componentes da Interface
         self.create_widgets()
@@ -223,12 +238,18 @@ def atualizar_rotas(self, resultados):
     # Lógica para atualizar as rotas na interface
     self.menor_rota_fb.set(
         f"{resultados['Força Bruta']['Menor Rota']}")
+    self.km_fb.set(
+        f"{resultados['Força Bruta']['Menor Distância']} km")
 
     self.menor_rota_ag.set(
         f"{resultados['Algoritmo Genético']['Menor Rota']}")
+    self.km_ag.set(
+        f"{resultados['Algoritmo Genético']['Menor Distância']} km")
 
     self.menor_rota_sa.set(
         f"{resultados['Simulated Annealing']['Menor Rota']}")
+    self.km_sa.set(
+        f"{resultados['Simulated Annealing']['Menor Distância']} km")
 
     return 0
 
