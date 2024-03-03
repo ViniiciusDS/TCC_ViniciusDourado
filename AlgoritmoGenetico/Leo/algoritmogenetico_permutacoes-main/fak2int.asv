@@ -1,6 +1,0 @@
-function int = fak2int(fak)
-    int = 0;
-    for k = 0:length(fak)-1
-        int = int + fa
-    end
-end
