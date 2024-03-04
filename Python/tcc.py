@@ -3,7 +3,7 @@
 import numpy as np  # Importar a biblioteca numpy
 import pandas as pd  # Importar a biblioteca pandas
 import matplotlib.pyplot as plt  # Importar a biblioteca matplotlib
-from scipy.stats import ttest_rel  # Importar a função ttest_rel
+from scipy.stats import ttest_rel  # type: ignore # Importar a função ttest_rel
 from forca_bruta import forcabruta  # Importar a função forcabruta
 from alggenetico import alggenetico  # Importar a função alggenetico
 # Importar a função simulatedAnnealing
@@ -160,6 +160,7 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
     plt.figure(figsize=(5, 5))
     largura_barra = 0.2
     posicoes = np.arange(len(num_cidades_vec))
+    num_cidades_str = [str(num) for num in num_cidades_vec]
     for i in range(3):
         plt.bar(posicoes + i * largura_barra,
                 Tab_Resultados_dist[:, i], width=largura_barra, label=metodos[i])
@@ -167,7 +168,7 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
     plt.ylabel('Distância', fontsize=20)
     plt.title('Menor Distância x Número de Cidades', fontsize=20)
     plt.legend(fontsize=16, loc='upper right')
-    plt.xticks(posicoes, num_cidades_vec, fontsize=20)
+    plt.xticks(posicoes, num_cidades_str, fontsize=20)
     plt.yticks(fontsize=20)
     plt.grid(True)
     plt.show()
