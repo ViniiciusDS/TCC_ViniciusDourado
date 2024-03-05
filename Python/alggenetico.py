@@ -23,8 +23,6 @@ def alggenetico(MatrizDistTrab, tam_Pop_ini, tam_gera):
 
     # Criando a população inicial
     for k in range(tam_Pop_ini):
-        # cidades_aleatorias = np.random.permutation(
-        #    np.arange(1, numCidades)) + 1
         cidades_aleatorias = np.random.choice(np.setdiff1d(
             np.arange(2, numCidades+1), [1]), size=numCidades-1, replace=False)
 
@@ -69,10 +67,10 @@ def alggenetico(MatrizDistTrab, tam_Pop_ini, tam_gera):
 
             # Aplicando a Mutação com base na probabilidade
             if np.random.rand() < tx_mutacao:
-                c = np.random.choice(np.setdiff1d(
-                    np.arange(1, numCidades), b), size=2, replace=False)
-                FilhosPai[pa, c[0]] = Pai[0, c[1]]
-                FilhosPai[pa, c[1]] = Pai[0, c[0]]
+                m = np.random.permutation(np.arange(1, numCidades))[:2]
+                FilhosPai[pa, :] = Pai
+                FilhosPai[pa, m[0]] = Pai[0, m[1]]
+                FilhosPai[pa, m[1]] = Pai[0, m[0]]
 
         for ma in range(malim):
             # Selecionado os indíces para a troca de cidades
@@ -83,10 +81,10 @@ def alggenetico(MatrizDistTrab, tam_Pop_ini, tam_gera):
 
             # Aplicando a Mutação com base na probabilidade
             if np.random.rand() < tx_mutacao:
-                c = np.random.choice(np.setdiff1d(
-                    np.arange(1, numCidades), b), size=2, replace=False)
-                FilhosMae[ma, c[0]] = Mae[0, c[1]]
-                FilhosMae[ma, c[1]] = Mae[0, c[0]]
+                m = np.random.permutation(np.arange(1, numCidades))[:2]
+                FilhosMae[ma, :] = Mae
+                FilhosMae[ma, m[0]] = Mae[0, m[1]]
+                FilhosMae[ma, m[1]] = Mae[0, m[0]]
 
         #   Formando a nova população
         Populacao = np.concatenate((Pai, Mae, FilhosPai, FilhosMae))

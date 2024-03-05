@@ -203,7 +203,8 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
         "Força Bruta": {
             "media_tempo": Resultados_Final_tempo[0],
             "desvio_padrao_tempo": np.std(Tab_Resultados_tempo[:, 0]),
-            "Menor Rota": resultados_forca_bruta['Rota_menor'],
+            "Menor Rota": resultados_forca_bruta['Rota_menor']
+            if 'resultados_forca_bruta' in locals() else None,
             "Menor Distância": resultados_forca_bruta['distanciamenor']
             if 'resultados_forca_bruta' in locals() else None
 
@@ -211,16 +212,19 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
         "Algoritmo Genético": {
             "media_tempo": Resultados_Final_tempo[1],
             "desvio_padrao_tempo": np.std(Tab_Resultados_tempo[:, 1]),
-            "Menor Rota": resultados_algoritmo_genetico['melhorRota'],
+            "Menor Rota": resultados_algoritmo_genetico['melhorRota']
+            if 'resultados_algoritmo_genetico' in locals() else None,
             "Menor Distância": resultados_algoritmo_genetico['menorDistancia']
             if 'resultados_algoritmo_genetico' in locals() else None
+
         },
         "Simulated Annealing": {
             "media_tempo": Resultados_Final_tempo[2],
             "desvio_padrao_tempo": np.std(Tab_Resultados_tempo[:, 2]),
-            "Menor Rota": resultados_SA['melhorRota'],
+            "Menor Rota": resultados_SA['melhorRota']if 'resultados_SA' in locals() else None,
             "Menor Distância": resultados_SA['menorDistancia']
             if 'resultados_SA' in locals() else None
+
         }
 
 
