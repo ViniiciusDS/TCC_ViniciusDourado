@@ -14,7 +14,8 @@ import argparse
 
 def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_cidades: int,
                           exec_forca_bruta: bool, exec_alg_genetico: bool,
-                          exec_simulated_annealing: bool, inicio_aumento: int, fim_aumento: int):
+                          exec_simulated_annealing: bool, inicio_aumento: int, fim_aumento: int,
+                          tam_pop_ini_ag: int, tam_gera_ag: int):
 
     # Inicializar o tempo total de execução do programa
     tic_total = time.time()
@@ -49,8 +50,8 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
     ttest_control = 0  # 1 para executar, 0 para não executar
 
     # Tamanho População inicial e Numero de gerações para o Algoritmo Genético
-    tam_Pop_ini_AG = 10
-    tam_gera_AG = 100
+    tam_Pop_ini_AG = tam_pop_ini_ag
+    tam_gera_AG = tam_gera_ag
 
     # Variáveis para o modelo de Simulated Annealing
     num_int_SA = 100
@@ -279,4 +280,5 @@ if __name__ == '__main__':
     # Executar o programa principal
     calcute_metodos_param(args.arquivo_matriz, args.incrementar_cidades, args.num_cidades,
                           args.exec_forca_bruta, args.exec_alg_genetico,
-                          args.exec_simulated_annealing, args.inicio_aumento, args.fim_aumento)
+                          args.exec_simulated_annealing, args.inicio_aumento, args.fim_aumento,
+                          args.tam_pop_ini_ag, args.tam_gera_ag)

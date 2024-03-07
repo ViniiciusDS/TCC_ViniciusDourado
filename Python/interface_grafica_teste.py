@@ -22,6 +22,8 @@ class InterfaceGrafica:
         self.executar_simulated_annealing = tk.BooleanVar(value=True)
         self.num_cidades_inicio = tk.StringVar()
         self.num_cidades_fim = tk.StringVar()
+        self.tam_pop_ini_ag = tk.StringVar()
+        self.tam_gera_ag = tk.StringVar()
 
         # Resultados
         self.resultados_text = tk.Text(self.root, height=10, width=62)
@@ -144,6 +146,25 @@ class InterfaceGrafica:
         entry_fim = tk.Entry(self.root, textvariable=self.num_cidades_fim)
         entry_fim.grid(row=13, column=0)
 
+        # Opções do Algoritmo Genético
+        # Tamanho da População Inicial
+        label_tam_pop_ini_ag = tk.Label(
+            self.root, text="Tamanho da População Inicial:")
+        label_tam_pop_ini_ag.grid(row=11, column=1)
+
+        entry_tam_pop_ini_ag = tk.Entry(
+            self.root, textvariable=self.tam_pop_ini_ag)
+        entry_tam_pop_ini_ag.grid(row=12, column=1)
+
+        # Tamanho da Geração
+        label_tam_gera_ag = tk.Label(
+            self.root, text="Tamanho da Geração:")
+        label_tam_gera_ag.grid(row=13, column=1)
+
+        entry_tam_gera_ag = tk.Entry(
+            self.root, textvariable=self.tam_gera_ag)
+        entry_tam_gera_ag.grid(row=14, column=1)
+
         # Opções de Métodos
         label_metodos = tk.Label(self.root, text="Métodos a serem executados:")
         label_metodos.grid(row=14, column=0)
@@ -193,6 +214,15 @@ class InterfaceGrafica:
             fim_aumento = "0"
             num_cidades = int(self.num_cidades.get())  # Número de cidades
 
+        if self.executar_alg_genetico.get():
+            tam_pop_ini_ag = int(self.tam_pop_ini_ag.get()
+                                 )
+            tam_gera_ag = int(self.tam_gera_ag.get()
+                              )
+        else:
+            tam_pop_ini_ag = "0"
+            tam_gera_ag = "0"
+
         # Reiniciando o timer
         start_time = time.time()
 
@@ -209,7 +239,7 @@ class InterfaceGrafica:
         resultados_tcc = calcute_metodos_param(matriz_file_path, incrementar_cidades, num_cidades,
                                                executar_forca_bruta, executar_alg_genetico,
                                                executar_simulated_annealing, inicio_aumento,
-                                               fim_aumento)
+                                               fim_aumento, tam_pop_ini_ag, tam_gera_ag)
 
         # Parando o timer e calculando o tempo total de execução
         elapsed_time = time.time() - start_time
