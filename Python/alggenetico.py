@@ -15,8 +15,6 @@ def alggenetico(MatrizDistTrab, tam_Pop_ini, tam_gera):
 
     # Criando as variáveis para economizar memória
     Populacao = np.zeros((tam_Pop_ini, (numCidades+1)))
-    FilhosPai = np.zeros((4, (numCidades+1)))
-    FilhosMae = np.zeros((4, (numCidades+1)))
     nmr_filhos = np.zeros(((tam_Pop_ini-2), (numCidades+1)))
     Percurso = np.zeros((tam_Pop_ini, tam_gera))
     tx_mutacao = 0.1
@@ -56,6 +54,10 @@ def alggenetico(MatrizDistTrab, tam_Pop_ini, tam_gera):
             else:
                 palim = (num_filhos - 1) // 2
                 malim = (num_filhos + 1) // 2
+
+        # Criando os filhos
+        FilhosPai = np.zeros((palim, (numCidades+1)))
+        FilhosMae = np.zeros((malim, (numCidades+1)))
 
         # Criando os filhos por permutação e aplicando mutação
         for pa in range(palim):
