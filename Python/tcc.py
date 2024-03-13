@@ -15,7 +15,8 @@ import argparse
 def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_cidades: int,
                           exec_forca_bruta: bool, exec_alg_genetico: bool,
                           exec_simulated_annealing: bool, inicio_aumento: int, fim_aumento: int,
-                          tam_pop_ini_ag: int, tam_gera_ag: int):
+                          tam_pop_ini_ag: int, tam_gera_ag: int, num_int_sa: int,
+                          temp_ini_sa: float, taxa_resfriamento_sa: float):
 
     # Inicializar o tempo total de execução do programa
     tic_total = time.time()
@@ -54,9 +55,9 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
     tam_gera_AG = tam_gera_ag
 
     # Variáveis para o modelo de Simulated Annealing
-    num_int_SA = 100
-    temp_ini = 0.7
-    taxa_resfri = 0.95
+    num_int_SA = num_int_sa
+    temp_ini = temp_ini_sa
+    taxa_resfri = taxa_resfriamento_sa
 
     # Criação da Tabela de Resultados
     n_simulacoes = 8
@@ -281,4 +282,5 @@ if __name__ == '__main__':
     calcute_metodos_param(args.arquivo_matriz, args.incrementar_cidades, args.num_cidades,
                           args.exec_forca_bruta, args.exec_alg_genetico,
                           args.exec_simulated_annealing, args.inicio_aumento, args.fim_aumento,
-                          args.tam_pop_ini_ag, args.tam_gera_ag)
+                          args.tam_pop_ini_ag, args.tam_gera_ag, args.num_int_sa,
+                          args.temp_ini_sa, args.taxa_resfriamento_sa)

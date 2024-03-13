@@ -5,7 +5,28 @@ from tkinter import filedialog
 import time  # Import the 'time' module
 from tcc import calcute_metodos_param  # Import tcc.py
 
-global resultados_finais
+
+class PlaceholderEntry(tk.Entry):
+    def __init__(self, container, placeholder, *args, **kwargs):
+        super().__init__(container, *args, **kwargs)
+        self.placeholder = placeholder
+        self.placeholder_color = 'grey'
+        self.default_fg_color = self['foreground']
+
+        self.bind('<FocusIn>', self._clear_placeholder)
+        self.bind('<FocusOut>', self._set_placeholder)
+
+        self._set_placeholder()
+
+    def _clear_placeholder(self, event):
+        if self['foreground'] == self.placeholder_color:
+            self.delete(0, 'end')
+            self['foreground'] = self.default_fg_color
+
+    def _set_placeholder(self, event=None):
+        if not self.get():
+            self.insert(0, self.placeholder)
+            self['foreground'] = self.placeholder_color
 
 
 class InterfaceGrafica:
@@ -24,10 +45,13 @@ class InterfaceGrafica:
         self.num_cidades_fim = tk.StringVar()
         self.tam_pop_ini_ag = tk.StringVar()
         self.tam_gera_ag = tk.StringVar()
+        self.num_int_sa = tk.StringVar()
+        self.temp_ini_sa = tk.StringVar()
+        self.taxa_resfriamento_sa = tk.StringVar()
 
         # Resultados
         self.resultados_text = tk.Text(self.root, height=10, width=62)
-        self.resultados_text.grid(row=2, column=1, rowspan=8)
+        self.resultados_text.grid(row=2, column=1, rowspan=8, columnspan=3)
 
         # Aba tempo de execução
         self.label_tempo = tk.Label(self.root, text="Tempo de Execução:")
@@ -36,17 +60,17 @@ class InterfaceGrafica:
         # Aba Menor Rota e km Força Bruta
         self.label_menor_rota_fb = tk.Label(
             self.root, text="Menor Rota Força Bruta:")
-        self.label_menor_rota_fb.grid(row=5, column=3)
+        self.label_menor_rota_fb.grid(row=5, column=4)
 
         # Aba Menor Rota e km Algoritmo Genético
         self.label_menor_rota_ag = tk.Label(
             self.root, text="Menor Rota Algoritmo Genético:")
-        self.label_menor_rota_ag.grid(row=8, column=3)
+        self.label_menor_rota_ag.grid(row=8, column=4)
 
         # Aba Menor Rota e km Simulated Annealing
         self.label_menor_rota_sa = tk.Label(
             self.root, text="Menor Rota Simulated Annealing:")
-        self.label_menor_rota_sa.grid(row=11, column=3)
+        self.label_menor_rota_sa.grid(row=11, column=4)
 
         # Adiciona uma variável de controle para a menor rota e km da força bruta
         self.menor_rota_fb = tk.StringVar()
@@ -78,26 +102,26 @@ class InterfaceGrafica:
         # Exibição dinâmica da menor rota e km da força bruta
         self.label_menor_rota_fb_real = tk.Label(
             self.root, textvariable=self.menor_rota_fb)
-        self.label_menor_rota_fb_real.grid(row=6, column=3)
+        self.label_menor_rota_fb_real.grid(row=6, column=4)
         self.label_km_fb_real = tk.Label(
             self.root, textvariable=self.km_fb)
-        self.label_km_fb_real.grid(row=7, column=3)
+        self.label_km_fb_real.grid(row=7, column=4)
 
         # Exibição dinâmica da menor rota e km do algoritmo genético
         self.label_menor_rota_ag_real = tk.Label(
             self.root, textvariable=self.menor_rota_ag)
-        self.label_menor_rota_ag_real.grid(row=9, column=3)
+        self.label_menor_rota_ag_real.grid(row=9, column=4)
         self.label_km_ag_real = tk.Label(
             self.root, textvariable=self.km_ag)
-        self.label_km_ag_real.grid(row=10, column=3)
+        self.label_km_ag_real.grid(row=10, column=4)
 
         # Exibição dinâmica da menor rota e km do simulated annealing
         self.label_menor_rota_sa_real = tk.Label(
             self.root, textvariable=self.menor_rota_sa)
-        self.label_menor_rota_sa_real.grid(row=12, column=3)
+        self.label_menor_rota_sa_real.grid(row=12, column=4)
         self.label_km_sa_real = tk.Label(
             self.root, textvariable=self.km_sa)
-        self.label_km_sa_real.grid(row=13, column=3)
+        self.label_km_sa_real.grid(row=13, column=4)
 
         # Componentes da Interface
         self.create_widgets()
@@ -121,7 +145,7 @@ class InterfaceGrafica:
             self.root, text="Procurar", command=self.browse_file)
         button_browse.grid(row=7, column=0)
 
-        # Opções de Aumentar Cidades
+        # Opções de Aumentar progressivamente o número de Cidades
         label_aumentar_cidades = tk.Label(
             self.root, text="Aumentar o número de cidades:")
         label_aumentar_cidades.grid(row=8, column=0)
@@ -133,37 +157,66 @@ class InterfaceGrafica:
         # Caso o usuário queira aumentar o número de cidades
         # Início
         label_num_cidades_inicio = tk.Label(self.root, text="Número Inicial:")
-        label_num_cidades_inicio.grid(row=10, column=0)
+        label_num_cidades_inicio.grid(row=11, column=1)
 
-        entry_inicio = tk.Entry(
-            self.root, textvariable=self.num_cidades_inicio)
-        entry_inicio.grid(row=11, column=0)
+        entry_inicio = PlaceholderEntry(
+            self.root, "Exemplo: 5", textvariable=self.num_cidades_inicio)
+        entry_inicio.grid(row=12, column=1)
 
         # Fim
         label_num_cidades_fim = tk.Label(self.root, text="Número Final:")
-        label_num_cidades_fim.grid(row=12, column=0)
+        label_num_cidades_fim.grid(row=13, column=1)
 
-        entry_fim = tk.Entry(self.root, textvariable=self.num_cidades_fim)
-        entry_fim.grid(row=13, column=0)
+        entry_fim = PlaceholderEntry(
+            self.root, "Exemplo: 10", textvariable=self.num_cidades_fim)
+        entry_fim.grid(row=14, column=1)
 
         # Opções do Algoritmo Genético
         # Tamanho da População Inicial
         label_tam_pop_ini_ag = tk.Label(
             self.root, text="Tamanho da População Inicial:")
-        label_tam_pop_ini_ag.grid(row=11, column=1)
+        label_tam_pop_ini_ag.grid(row=11, column=2)
 
-        entry_tam_pop_ini_ag = tk.Entry(
-            self.root, textvariable=self.tam_pop_ini_ag)
-        entry_tam_pop_ini_ag.grid(row=12, column=1)
+        entry_tam_pop_ini_ag = PlaceholderEntry(
+            self.root, "Exemplo: 10", textvariable=self.tam_pop_ini_ag)
+        entry_tam_pop_ini_ag.grid(row=12, column=2)
 
         # Tamanho da Geração
         label_tam_gera_ag = tk.Label(
             self.root, text="Tamanho da Geração:")
-        label_tam_gera_ag.grid(row=13, column=1)
+        label_tam_gera_ag.grid(row=13, column=2)
 
-        entry_tam_gera_ag = tk.Entry(
-            self.root, textvariable=self.tam_gera_ag)
-        entry_tam_gera_ag.grid(row=14, column=1)
+        entry_tam_gera_ag = PlaceholderEntry(
+            self.root, "Exemplo: 100", textvariable=self.tam_gera_ag)
+        entry_tam_gera_ag.grid(row=14, column=2)
+
+        # Opções do Simulated Annealing
+        # Número de Interações
+        label_num_int_sa = tk.Label(
+            self.root, text="Número de Interações:")
+        label_num_int_sa.grid(row=11, column=3)
+
+        entry_num_int_sa = PlaceholderEntry(
+            self.root, "Exemplo: 100", textvariable=self.num_int_sa)
+        entry_num_int_sa.grid(row=12, column=3)
+
+        # Temperatura Inicial
+        label_temp_ini_sa = tk.Label(
+            self.root, text="Temperatura Inicial:")
+        label_temp_ini_sa.grid(row=13, column=3)
+
+        entry_temp_ini_sa = PlaceholderEntry(
+            self.root, "Exemplo: 0.7", textvariable=self.temp_ini_sa)
+        entry_temp_ini_sa.grid(row=14, column=3)
+
+        # Taxa de Resfriamento
+        label_taxa_resfriamento_sa = tk.Label(
+            self.root, text="Taxa de Resfriamento:")
+        label_taxa_resfriamento_sa.grid(row=15, column=3)
+
+        entry_taxa_resfriamento_sa = PlaceholderEntry(
+            self.root, "Exemplo: 0.95", textvariable=self.taxa_resfriamento_sa)
+        entry_taxa_resfriamento_sa.grid(row=16, column=3)
 
         # Opções de Métodos
         label_metodos = tk.Label(self.root, text="Métodos a serem executados:")
@@ -223,6 +276,18 @@ class InterfaceGrafica:
             tam_pop_ini_ag = "0"
             tam_gera_ag = "0"
 
+        if self.executar_simulated_annealing.get():
+            num_int_sa = int(self.num_int_sa.get()
+                             )
+            temp_ini_sa = float(self.temp_ini_sa.get()
+                                )
+            taxa_resfriamento_sa = float(self.taxa_resfriamento_sa.get()
+                                         )
+        else:
+            num_int_sa = "0"
+            temp_ini_sa = "0"
+            taxa_resfriamento_sa = "0"
+
         # Reiniciando o timer
         start_time = time.time()
 
@@ -239,7 +304,8 @@ class InterfaceGrafica:
         resultados_tcc = calcute_metodos_param(matriz_file_path, incrementar_cidades, num_cidades,
                                                executar_forca_bruta, executar_alg_genetico,
                                                executar_simulated_annealing, inicio_aumento,
-                                               fim_aumento, tam_pop_ini_ag, tam_gera_ag)
+                                               fim_aumento, tam_pop_ini_ag, tam_gera_ag, num_int_sa,
+                                               temp_ini_sa, taxa_resfriamento_sa)
 
         # Parando o timer e calculando o tempo total de execução
         elapsed_time = time.time() - start_time
