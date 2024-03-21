@@ -4,6 +4,7 @@ from tkinter import filedialog
 # import os  # Para abrir o arquivo de matriz
 import time  # Import the 'time' module
 from tcc import calcute_metodos_param  # Import tcc.py
+import numpy as np  # Import the 'numpy' module
 
 
 class PlaceholderEntry(tk.Entry):
@@ -62,33 +63,51 @@ class InterfaceGrafica:
             self.root, text="Menor Rota Força Bruta:")
         self.label_menor_rota_fb.grid(row=5, column=4)
 
+        self.label_menor_rota_fb_texto = tk.Label(
+            self.root, text="Menor Rota Força Bruta:")
+        self.label_menor_rota_fb_texto.grid(row=3, column=5)
+
         # Aba Menor Rota e km Algoritmo Genético
         self.label_menor_rota_ag = tk.Label(
             self.root, text="Menor Rota Algoritmo Genético:")
         self.label_menor_rota_ag.grid(row=8, column=4)
+
+        self.label_menor_rota_ag_texto = tk.Label(
+            self.root, text="Menor Rota Algoritmo Genético:")
+        self.label_menor_rota_ag_texto.grid(row=3, column=6)
 
         # Aba Menor Rota e km Simulated Annealing
         self.label_menor_rota_sa = tk.Label(
             self.root, text="Menor Rota Simulated Annealing:")
         self.label_menor_rota_sa.grid(row=11, column=4)
 
+        self.label_menor_rota_sa_texto = tk.Label(
+            self.root, text="Menor Rota Simulated Annealing:")
+        self.label_menor_rota_sa_texto.grid(row=3, column=7)
+
         # Adiciona uma variável de controle para a menor rota e km da força bruta
         self.menor_rota_fb = tk.StringVar()
         self.menor_rota_fb.set("[0]")
         self.km_fb = tk.StringVar()
         self.km_fb.set("0")
+        self.menor_rota_fb_texto = tk.StringVar()
+        self.menor_rota_fb_texto.set("[0]")
 
         # Adiciona uma variável de controle para a menor rota e km do algoritmo genético
         self.menor_rota_ag = tk.StringVar()
         self.menor_rota_ag.set("[0]")
         self.km_ag = tk.StringVar()
         self.km_ag.set("0")
+        self.menor_rota_ag_texto = tk.StringVar()
+        self.menor_rota_ag_texto.set("[0]")
 
         # Adiciona uma variável de controle para a menor rota e km do simulated annealing
         self.menor_rota_sa = tk.StringVar()
         self.menor_rota_sa.set("[0]")
         self.km_sa = tk.StringVar()
         self.km_sa.set("0")
+        self.menor_rota_sa_texto = tk.StringVar()
+        self.menor_rota_sa_texto.set("[0]")
 
         # Adicionando uma variável de controle para o tempo de execução
         self.tempo_execucao = tk.StringVar()
@@ -106,6 +125,10 @@ class InterfaceGrafica:
         self.label_km_fb_real = tk.Label(
             self.root, textvariable=self.km_fb)
         self.label_km_fb_real.grid(row=7, column=4)
+        self.label_menor_rota_fb_texto_real = tk.Label(
+            self.root, textvariable=self.menor_rota_fb_texto)
+        self.label_menor_rota_fb_texto_real.grid(
+            row=5, column=5, rowspan=10, columnspan=1)
 
         # Exibição dinâmica da menor rota e km do algoritmo genético
         self.label_menor_rota_ag_real = tk.Label(
@@ -114,6 +137,10 @@ class InterfaceGrafica:
         self.label_km_ag_real = tk.Label(
             self.root, textvariable=self.km_ag)
         self.label_km_ag_real.grid(row=10, column=4)
+        self.label_menor_rota_ag_texto_real = tk.Label(
+            self.root, textvariable=self.menor_rota_ag_texto)
+        self.label_menor_rota_ag_texto_real.grid(
+            row=5, column=6, rowspan=10, columnspan=1)
 
         # Exibição dinâmica da menor rota e km do simulated annealing
         self.label_menor_rota_sa_real = tk.Label(
@@ -122,6 +149,10 @@ class InterfaceGrafica:
         self.label_km_sa_real = tk.Label(
             self.root, textvariable=self.km_sa)
         self.label_km_sa_real.grid(row=13, column=4)
+        self.label_menor_rota_sa_texto_real = tk.Label(
+            self.root, textvariable=self.menor_rota_sa_texto)
+        self.label_menor_rota_sa_texto_real.grid(
+            row=5, column=7, rowspan=10, columnspan=1)
 
         # Componentes da Interface
         self.create_widgets()
@@ -155,21 +186,24 @@ class InterfaceGrafica:
         checkbox_aumentar_cidades.grid(row=9, column=0)
 
         # Caso o usuário queira aumentar o número de cidades
+        label_incrementar_cidades = tk.Label(
+            self.root, text="Variáveis para Incrementar as cidades:")
+        label_incrementar_cidades.grid(row=11, column=1)
         # Início
         label_num_cidades_inicio = tk.Label(self.root, text="Número Inicial:")
-        label_num_cidades_inicio.grid(row=11, column=1)
+        label_num_cidades_inicio.grid(row=12, column=1)
 
         entry_inicio = PlaceholderEntry(
             self.root, "Exemplo: 5", textvariable=self.num_cidades_inicio)
-        entry_inicio.grid(row=12, column=1)
+        entry_inicio.grid(row=13, column=1)
 
         # Fim
         label_num_cidades_fim = tk.Label(self.root, text="Número Final:")
-        label_num_cidades_fim.grid(row=13, column=1)
+        label_num_cidades_fim.grid(row=14, column=1)
 
         entry_fim = PlaceholderEntry(
             self.root, "Exemplo: 10", textvariable=self.num_cidades_fim)
-        entry_fim.grid(row=14, column=1)
+        entry_fim.grid(row=15, column=1)
 
         # Opções do Algoritmo Genético
         # Tamanho da População Inicial
@@ -321,6 +355,7 @@ class InterfaceGrafica:
 
         # Atualizando a menor rota da força bruta
         atualizar_rotas(self, resultados_tcc)
+        atualizar_nomes_cidades(self, resultados_tcc, matriz_file_path)
 
         # Atualizando o timer de tempo de execução
         self.tempo_execucao.set(f"{elapsed_time:.2f} segundos")
@@ -346,6 +381,40 @@ def atualizar_rotas(self, resultados):
         f"{resultados['Simulated Annealing']['Menor Rota']}")
     self.km_sa.set(
         f"{resultados['Simulated Annealing']['Menor Distância']} km")
+
+    return 0
+
+
+def atualizar_nomes_cidades(self, resultados, matriz_file_path):
+    # Lógica para atualizar os nomes das cidades na interface
+    matriz = np.genfromtxt(matriz_file_path, delimiter='\t', dtype=str)
+
+    # Obtendo os nomes das cidades da última coluna da matriz
+    nomes_cidades = matriz[:, -1]
+
+    # Convertendo as melhores rotas dos métodos para inteiros
+    melhor_rota_fb = [int(idx)
+                      for idx in resultados['Força Bruta']['Menor Rota']]
+    melhor_rota_ag = [int(idx)
+                      for idx in resultados['Algoritmo Genético']['Menor Rota']]
+    melhor_rota_sa = [int(idx)
+                      for idx in resultados['Simulated Annealing']['Menor Rota']]
+
+    # Criando a numeração das cidades
+    numeracao_cidades = [str(i) + " - " + nome for i,
+                         nome in enumerate(nomes_cidades)]
+
+    # Atualizando os nomes das cidades na interface para a melhor rota da força bruta
+    nomes_cidades_fb = [numeracao_cidades[i] for i in melhor_rota_fb]
+    self.menor_rota_fb_texto.set("\n".join(nomes_cidades_fb))
+
+    # Atualizando os nomes das cidades na interface para a melhor rota do algoritmo genético
+    nomes_cidades_ag = [numeracao_cidades[i] for i in melhor_rota_ag]
+    self.menor_rota_ag_texto.set("\n".join(nomes_cidades_ag))
+
+    # Atualizando os nomes das cidades na interface para a melhor rota do simulated annealing
+    nomes_cidades_sa = [numeracao_cidades[i] for i in melhor_rota_sa]
+    self.menor_rota_sa_texto.set("\n".join(nomes_cidades_sa))
 
     return 0
 

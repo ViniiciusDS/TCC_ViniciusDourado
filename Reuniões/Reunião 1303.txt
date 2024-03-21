@@ -1,0 +1,16 @@
+trocar afinar por refinar  V
+
+
+colocar qual o tipo de algoritmo genético 	V
+
+fluxograma dos métodos na metodologia	V
+
+mudar quadro AG	
+
+redundacia nos apendices	
+
+na hora de falar sobre a o porque do refinamento deixar o leitor na espectativa 
+
+
+implementar a lista das cidades no progrma	V
+talvez tirar o espaço em branco			V
