@@ -392,29 +392,38 @@ def atualizar_nomes_cidades(self, resultados, matriz_file_path):
     # Obtendo os nomes das cidades da última coluna da matriz
     nomes_cidades = matriz[:, -1]
 
-    # Convertendo as melhores rotas dos métodos para inteiros
-    melhor_rota_fb = [int(idx)
-                      for idx in resultados['Força Bruta']['Menor Rota']]
-    melhor_rota_ag = [int(idx)
-                      for idx in resultados['Algoritmo Genético']['Menor Rota']]
-    melhor_rota_sa = [int(idx)
-                      for idx in resultados['Simulated Annealing']['Menor Rota']]
-
     # Criando a numeração das cidades
     numeracao_cidades = [str(i) + " - " + nome for i,
                          nome in enumerate(nomes_cidades)]
 
     # Atualizando os nomes das cidades na interface para a melhor rota da força bruta
-    nomes_cidades_fb = [numeracao_cidades[i] for i in melhor_rota_fb]
-    self.menor_rota_fb_texto.set("\n".join(nomes_cidades_fb))
+    if self.executar_forca_bruta.get() and resultados['Força Bruta'] is not None:
+        melhor_rota_fb = [int(idx)
+                          for idx in resultados['Força Bruta']['Menor Rota']]
+        nomes_cidades_fb = [numeracao_cidades[i] for i in melhor_rota_fb]
+        self.menor_rota_fb_texto.set("\n".join(nomes_cidades_fb))
+    else:
+        self.menor_rota_fb_texto.set("")   # Limpar a menor rota da força bruta
 
     # Atualizando os nomes das cidades na interface para a melhor rota do algoritmo genético
-    nomes_cidades_ag = [numeracao_cidades[i] for i in melhor_rota_ag]
-    self.menor_rota_ag_texto.set("\n".join(nomes_cidades_ag))
+    if self.executar_alg_genetico.get() and resultados['Algoritmo Genético'] is not None:
+        melhor_rota_ag = [
+            int(idx) for idx in resultados['Algoritmo Genético']['Menor Rota']]
+        nomes_cidades_ag = [numeracao_cidades[i] for i in melhor_rota_ag]
+        self.menor_rota_ag_texto.set("\n".join(nomes_cidades_ag))
+    else:
+        # Limpar a menor rota do algoritmo genético
+        self.menor_rota_ag_texto.set("")
 
     # Atualizando os nomes das cidades na interface para a melhor rota do simulated annealing
-    nomes_cidades_sa = [numeracao_cidades[i] for i in melhor_rota_sa]
-    self.menor_rota_sa_texto.set("\n".join(nomes_cidades_sa))
+    if self.executar_simulated_annealing.get() and resultados['Simulated Annealing'] is not None:
+        melhor_rota_sa = [
+            int(idx) for idx in resultados['Simulated Annealing']['Menor Rota']]
+        nomes_cidades_sa = [numeracao_cidades[i] for i in melhor_rota_sa]
+        self.menor_rota_sa_texto.set("\n".join(nomes_cidades_sa))
+    else:
+        # Limpar a menor rota do simulated annealing
+        self.menor_rota_sa_texto.set("")
 
     return 0
 
