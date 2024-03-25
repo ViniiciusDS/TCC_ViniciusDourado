@@ -7,7 +7,7 @@ import time
 """ Função para executar o algoritmo genético """
 
 
-def alggenetico(MatrizDistTrab, tam_Pop_ini, tam_gera):
+def alggenetico(MatrizDistTrab, tam_Pop_ini, tam_gera, tx_mutacao):
     tempoAG = time.time()
     DistMatriz = MatrizDistTrab
 
@@ -17,7 +17,6 @@ def alggenetico(MatrizDistTrab, tam_Pop_ini, tam_gera):
     Populacao = np.zeros((tam_Pop_ini, (numCidades+1)))
     nmr_filhos = np.zeros(((tam_Pop_ini-2), (numCidades+1)))
     Percurso = np.zeros((tam_Pop_ini, tam_gera))
-    tx_mutacao = 0.1
 
     # Criando a população inicial
     for k in range(tam_Pop_ini):

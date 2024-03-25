@@ -16,7 +16,7 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
                           exec_forca_bruta: bool, exec_alg_genetico: bool,
                           exec_simulated_annealing: bool, inicio_aumento: int, fim_aumento: int,
                           tam_pop_ini_ag: int, tam_gera_ag: int, num_int_sa: int,
-                          temp_ini_sa: float, taxa_resfriamento_sa: float):
+                          temp_ini_sa: float, taxa_resfriamento_sa: float, tx_mutacao: float):
 
     # Inicializar o tempo total de execução do programa
     tic_total = time.time()
@@ -53,6 +53,7 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
     # Tamanho População inicial e Numero de gerações para o Algoritmo Genético
     tam_Pop_ini_AG = tam_pop_ini_ag
     tam_gera_AG = tam_gera_ag
+    tx_mutacao_ag = tx_mutacao
 
     # Variáveis para o modelo de Simulated Annealing
     num_int_SA = num_int_sa
@@ -95,7 +96,7 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
         # Executar Algoritmo Genético se a variável de controle estiver definida como 1
         if executar_alg_genetico:
             resultados_algoritmo_genetico = alggenetico(
-                MatrizDistTrab, tam_Pop_ini_AG, tam_gera_AG)
+                MatrizDistTrab, tam_Pop_ini_AG, tam_gera_AG, tx_mutacao_ag)
             tempoAG = resultados_algoritmo_genetico['tempoAG']
             menordistAG = resultados_algoritmo_genetico['menorDistancia']
             Tab_Resultados_tempo[sim, 1] = tempoAG
@@ -283,4 +284,4 @@ if __name__ == '__main__':
                           args.exec_forca_bruta, args.exec_alg_genetico,
                           args.exec_simulated_annealing, args.inicio_aumento, args.fim_aumento,
                           args.tam_pop_ini_ag, args.tam_gera_ag, args.num_int_sa,
-                          args.temp_ini_sa, args.taxa_resfriamento_sa)
+                          args.temp_ini_sa, args.taxa_resfriamento_sa, args.tx_mutacao)

@@ -46,6 +46,7 @@ class InterfaceGrafica:
         self.num_cidades_fim = tk.StringVar()
         self.tam_pop_ini_ag = tk.StringVar()
         self.tam_gera_ag = tk.StringVar()
+        self.tx_mutacao_ag = tk.StringVar()
         self.num_int_sa = tk.StringVar()
         self.temp_ini_sa = tk.StringVar()
         self.taxa_resfriamento_sa = tk.StringVar()
@@ -186,9 +187,9 @@ class InterfaceGrafica:
         checkbox_aumentar_cidades.grid(row=9, column=0)
 
         # Caso o usuário queira aumentar o número de cidades
-        label_incrementar_cidades = tk.Label(
-            self.root, text="Variáveis para Incrementar as cidades:")
-        label_incrementar_cidades.grid(row=11, column=1)
+        label_incrementar_cidades_ref = tk.Label(
+            self.root, text="Opções para variar o Número de cidades:")
+        label_incrementar_cidades_ref.grid(row=11, column=1)
         # Início
         label_num_cidades_inicio = tk.Label(self.root, text="Número Inicial:")
         label_num_cidades_inicio.grid(row=12, column=1)
@@ -206,51 +207,68 @@ class InterfaceGrafica:
         entry_fim.grid(row=15, column=1)
 
         # Opções do Algoritmo Genético
+        label_alg_genetico_ref = tk.Label(
+            self.root, text="Opções do Algoritmo Genético:")
+        label_alg_genetico_ref.grid(row=11, column=2)
+
         # Tamanho da População Inicial
         label_tam_pop_ini_ag = tk.Label(
             self.root, text="Tamanho da População Inicial:")
-        label_tam_pop_ini_ag.grid(row=11, column=2)
+        label_tam_pop_ini_ag.grid(row=12, column=2)
 
         entry_tam_pop_ini_ag = PlaceholderEntry(
             self.root, "Exemplo: 10", textvariable=self.tam_pop_ini_ag)
-        entry_tam_pop_ini_ag.grid(row=12, column=2)
+        entry_tam_pop_ini_ag.grid(row=13, column=2)
 
         # Tamanho da Geração
         label_tam_gera_ag = tk.Label(
             self.root, text="Tamanho da Geração:")
-        label_tam_gera_ag.grid(row=13, column=2)
+        label_tam_gera_ag.grid(row=14, column=2)
 
         entry_tam_gera_ag = PlaceholderEntry(
             self.root, "Exemplo: 100", textvariable=self.tam_gera_ag)
-        entry_tam_gera_ag.grid(row=14, column=2)
+        entry_tam_gera_ag.grid(row=15, column=2)
+
+        # Taxa de Mutação
+        label_tx_mutacao_ag = tk.Label(
+            self.root, text="Taxa de Mutação:")
+        label_tx_mutacao_ag.grid(row=16, column=2)
+
+        entry_tx_mutacao_ag = PlaceholderEntry(
+            self.root, "Exemplo: 0.1", textvariable=self.tx_mutacao_ag)
+        entry_tx_mutacao_ag.grid(row=17, column=2)
 
         # Opções do Simulated Annealing
+        label_simulated_annealing_ref = tk.Label(
+            self.root, text="Opções do Simulated Annealing:")
+        label_simulated_annealing_ref.grid(row=11, column=3)
+
         # Número de Interações
         label_num_int_sa = tk.Label(
             self.root, text="Número de Interações:")
-        label_num_int_sa.grid(row=11, column=3)
+        label_num_int_sa.grid(row=12, column=3)
 
         entry_num_int_sa = PlaceholderEntry(
             self.root, "Exemplo: 100", textvariable=self.num_int_sa)
-        entry_num_int_sa.grid(row=12, column=3)
+        entry_num_int_sa.grid(row=13, column=3)
 
         # Temperatura Inicial
         label_temp_ini_sa = tk.Label(
             self.root, text="Temperatura Inicial:")
-        label_temp_ini_sa.grid(row=13, column=3)
+        label_temp_ini_sa.grid(row=14, column=3)
 
         entry_temp_ini_sa = PlaceholderEntry(
             self.root, "Exemplo: 0.7", textvariable=self.temp_ini_sa)
-        entry_temp_ini_sa.grid(row=14, column=3)
+        entry_temp_ini_sa.grid(row=15, column=3)
 
         # Taxa de Resfriamento
         label_taxa_resfriamento_sa = tk.Label(
             self.root, text="Taxa de Resfriamento:")
-        label_taxa_resfriamento_sa.grid(row=15, column=3)
+        label_taxa_resfriamento_sa.grid(row=16, column=3)
 
         entry_taxa_resfriamento_sa = PlaceholderEntry(
             self.root, "Exemplo: 0.95", textvariable=self.taxa_resfriamento_sa)
-        entry_taxa_resfriamento_sa.grid(row=16, column=3)
+        entry_taxa_resfriamento_sa.grid(row=17, column=3)
 
         # Opções de Métodos
         label_metodos = tk.Label(self.root, text="Métodos a serem executados:")
@@ -306,9 +324,13 @@ class InterfaceGrafica:
                                  )
             tam_gera_ag = int(self.tam_gera_ag.get()
                               )
+            tx_mutacao_ag = float(self.tx_mutacao_ag.get()
+                                  )
+
         else:
             tam_pop_ini_ag = "0"
             tam_gera_ag = "0"
+            tx_mutacao_ag = "0"
 
         if self.executar_simulated_annealing.get():
             num_int_sa = int(self.num_int_sa.get()
@@ -339,7 +361,7 @@ class InterfaceGrafica:
                                                executar_forca_bruta, executar_alg_genetico,
                                                executar_simulated_annealing, inicio_aumento,
                                                fim_aumento, tam_pop_ini_ag, tam_gera_ag, num_int_sa,
-                                               temp_ini_sa, taxa_resfriamento_sa)
+                                               temp_ini_sa, taxa_resfriamento_sa, tx_mutacao_ag)
 
         # Parando o timer e calculando o tempo total de execução
         elapsed_time = time.time() - start_time
