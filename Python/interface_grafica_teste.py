@@ -50,6 +50,7 @@ class InterfaceGrafica:
         self.num_int_sa = tk.StringVar()
         self.temp_ini_sa = tk.StringVar()
         self.taxa_resfriamento_sa = tk.StringVar()
+        self.nmr_de_simulacoes = tk.StringVar()
 
         # Resultados
         self.resultados_text = tk.Text(self.root, height=10, width=62)
@@ -172,6 +173,14 @@ class InterfaceGrafica:
 
         entry_matriz = tk.Entry(self.root, textvariable=self.matriz_file_path)
         entry_matriz.grid(row=6, column=0)
+
+        # Numero de Simulações
+        label_simulacoes = tk.Label(self.root, text="Número de Simulações:")
+        label_simulacoes.grid(row=10, column=0)
+
+        entry_simulacoes = tk.Entry(
+            self.root, textvariable=self.nmr_de_simulacoes)
+        entry_simulacoes.grid(row=11, column=0)
 
         button_browse = tk.Button(
             self.root, text="Procurar", command=self.browse_file)
@@ -307,6 +316,8 @@ class InterfaceGrafica:
         # Obtendo os valores das opções
         matriz_file_path = self.matriz_file_path.get()  # Caminho do arquivo de matriz
         incrementar_cidades = self.incrementar_cidades.get()  # Aumentar cidades
+        nmr_de_simulacoes = int(self.nmr_de_simulacoes.get()
+                                )  # Número de simulações
 
         if self.incrementar_cidades.get():
             num_cidades = "0"
@@ -361,7 +372,8 @@ class InterfaceGrafica:
                                                executar_forca_bruta, executar_alg_genetico,
                                                executar_simulated_annealing, inicio_aumento,
                                                fim_aumento, tam_pop_ini_ag, tam_gera_ag, num_int_sa,
-                                               temp_ini_sa, taxa_resfriamento_sa, tx_mutacao_ag)
+                                               temp_ini_sa, taxa_resfriamento_sa, tx_mutacao_ag,
+                                               nmr_de_simulacoes)
 
         # Parando o timer e calculando o tempo total de execução
         elapsed_time = time.time() - start_time

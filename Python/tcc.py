@@ -16,7 +16,8 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
                           exec_forca_bruta: bool, exec_alg_genetico: bool,
                           exec_simulated_annealing: bool, inicio_aumento: int, fim_aumento: int,
                           tam_pop_ini_ag: int, tam_gera_ag: int, num_int_sa: int,
-                          temp_ini_sa: float, taxa_resfriamento_sa: float, tx_mutacao: float):
+                          temp_ini_sa: float, taxa_resfriamento_sa: float, tx_mutacao: float,
+                          nmr_simulacoes: int):
 
     # Inicializar o tempo total de execução do programa
     tic_total = time.time()
@@ -26,15 +27,12 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
 
     # Carregar matrizes de dados
     DistMatriz = pd.DataFrame(np.zeros((16, 16)))
-    # TempMatriz = pd.DataFrame(np.zeros((16, 16)))
 
     # Ler o arquivo de texto
     data_dist = pd.read_csv(arquivo_matriz, delimiter='\t')
-    # data_temp = pd.read_csv('MatrizTempProfessor.txt', delimiter='\t')
 
     # Converter os dados em uma matriz de banco de dados
     DistMatriz = data_dist
-    # TempMatriz = data_temp
 
     # Definir variáveis de controle para cada método
     # 1 para aumentar, 0 para não aumentar
@@ -61,7 +59,7 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
     taxa_resfri = taxa_resfriamento_sa
 
     # Criação da Tabela de Resultados
-    n_simulacoes = 8
+    n_simulacoes = nmr_simulacoes
     if aumentar_cidades:
         num_cidades_vec = np.arange(inicio_aumento, fim_aumento+1)
         n_simulacoes = len(num_cidades_vec)
@@ -115,67 +113,74 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
     Resultados_Final_tempo = np.mean(Tab_Resultados_tempo, axis=0)
 
     # Crie um gráfico de linha para cada método
-    plt.figure(figsize=(5, 5))
+    fig, ax = plt.subplots(
+        ncols=1, nrows=1, layout='tight', figsize=(5.5, 5.28))
     if aumentar_cidades:
         for i in range(3):
-            plt.plot(
+            ax.plot(
                 num_cidades_vec, Tab_Resultados_tempo[:, i], '-o', label=metodos[i], linewidth=5)
     else:
         for i in range(3):
-            plt.plot(range(1, n_simulacoes + 1),
-                     Tab_Resultados_tempo[:, i], '-o', label=metodos[i], linewidth=5)
+            ax.plot(range(1, n_simulacoes + 1),
+                    Tab_Resultados_tempo[:, i], '-o', label=metodos[i], linewidth=5)
     if aumentar_cidades == 1:
-        plt.xlabel('Número de Cidades', fontsize=20)
+        ax.set_xlabel('Número de Cidades', fontsize=20)
     else:
-        plt.xlabel('Simulação', fontsize=20)
-    plt.ylabel('Tempo de Execução (segundos)', fontsize=20)
-    plt.title('Tempo de Execução x Número de Cidades', fontsize=20)
-    plt.legend(loc='upper left', fontsize=20)
-    plt.xticks(fontsize=20)
-    plt.yticks(fontsize=20)
-    plt.grid(True)
+        ax.set_xlabel('Simulação', fontsize=20)
+    ax.set_ylabel('Tempo de Execução (segundos)', fontsize=20)
+    ax.set_title('Tempo de Execução x Número de Cidades', fontsize=20)
+    ax.legend(loc='upper left', fontsize=20)
+    ax.tick_params(axis='x', labelsize=20)
+    ax.tick_params(axis='y', labelsize=20)
+    ax.grid(True)
+    ax.set_box_aspect(1)
 
     # Crie um gráfico de linha para Algoritmo Genético e Simulated Annealing
-    plt.figure(figsize=(5, 5))
+    fig1, ax1 = plt.subplots(
+        ncols=1, nrows=1, layout='tight', figsize=(5.5, 5.28))
     if aumentar_cidades:
-        plt.plot(num_cidades_vec,
+        ax1.plot(num_cidades_vec,
                  Tab_Resultados_tempo[:, 1], '-o', label='Algoritmo Genético', linewidth=5)
-        plt.plot(num_cidades_vec,
+        ax1.plot(num_cidades_vec,
                  Tab_Resultados_tempo[:, 2], '-o', label='Simulated Annealing', linewidth=5)
     else:
-        plt.plot(range(1, n_simulacoes + 1),
+        ax1.plot(range(1, n_simulacoes + 1),
                  Tab_Resultados_tempo[:, 1], '-o', label='Algoritmo Genético', linewidth=5)
-        plt.plot(range(1, n_simulacoes + 1),
+        ax1.plot(range(1, n_simulacoes + 1),
                  Tab_Resultados_tempo[:, 2], '-o', label='Simulated Annealing', linewidth=5)
     if aumentar_cidades:
-        plt.xlabel('Número de Cidades', fontsize=20)
+        ax1.set_xlabel('Número de Cidades', fontsize=20)
     else:
-        plt.xlabel('Simulação', fontsize=20)
-    plt.ylabel('Tempo de Execução (segundos)', fontsize=20)
-    plt.title('Tempo de Execução de Algoritmo Genético e Simulated Annealing x'
-              ' Número de Cidades', fontsize=20)
-    plt.legend(loc='upper left', fontsize=20)
-    plt.xticks(fontsize=20)
-    plt.yticks(fontsize=20)
-    plt.grid(True)
+        ax1.set_xlabel('Simulação', fontsize=20)
+    ax1.set_ylabel('Tempo de Execução (segundos)', fontsize=20)
+    ax1.set_title('Tempo de Execução de Algoritmo Genético e Simulated Annealing x'
+                  ' Número de Cidades', fontsize=20)
+    ax1.legend(loc='upper left', fontsize=20)
+    ax1.tick_params(axis='x', labelsize=20)
+    ax1.tick_params(axis='y', labelsize=20)
+    ax1.grid(True)
+    ax1.set_box_aspect(1)
 
     # Crie um gráfico de barras para as menores distâncias de todos os métodos
-    plt.figure(figsize=(5, 5))
+    fig2, ax2 = plt.subplots(
+        ncols=1, nrows=1, layout='tight', figsize=(5.5, 5.28))
     largura_barra = 0.2
     posicoes = np.arange(len(num_cidades_vec))
     num_cidades_str = [str(num) for num in num_cidades_vec]
     for i in range(3):
-        plt.bar(posicoes + i * largura_barra,
+        ax2.bar(posicoes + i * largura_barra,
                 Tab_Resultados_dist[:, i], width=largura_barra, label=metodos[i])
-    plt.xlabel('Número de Cidades', fontsize=20)
-    plt.ylabel('Distância', fontsize=20)
-    plt.title('Menor Distância x Número de Cidades', fontsize=20)
-    plt.legend(fontsize=16, loc='upper right')
-    plt.xticks(posicoes, num_cidades_str, fontsize=20)
-    plt.yticks(fontsize=20)
-    plt.grid(True)
-    plt.show()
+    ax2.set_xlabel('Número de Cidades', fontsize=20)
+    ax2.set_ylabel('Distância', fontsize=20)
+    ax2.set_title('Menor Distância x Número de Cidades', fontsize=20)
+    ax2.legend(fontsize=16, loc='upper right')
+    ax2.set_xticks(posicoes, num_cidades_str)
+    ax2.tick_params(axis='x', labelsize=20)
+    ax2.tick_params(axis='y', labelsize=20)
+    ax2.grid(True)
+    ax2.set_box_aspect(1)
 
+    plt.show()
     # Exibe o Resultado final
     resultados_finais = []
     list_prints = []
@@ -284,4 +289,5 @@ if __name__ == '__main__':
                           args.exec_forca_bruta, args.exec_alg_genetico,
                           args.exec_simulated_annealing, args.inicio_aumento, args.fim_aumento,
                           args.tam_pop_ini_ag, args.tam_gera_ag, args.num_int_sa,
-                          args.temp_ini_sa, args.taxa_resfriamento_sa, args.tx_mutacao)
+                          args.temp_ini_sa, args.taxa_resfriamento_sa, args.tx_mutacao,
+                          args.nmr_simulacoes)
