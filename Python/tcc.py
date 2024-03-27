@@ -129,7 +129,7 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
         ax.set_xlabel('Simulação', fontsize=20)
     ax.set_ylabel('Tempo de Execução (segundos)', fontsize=20)
     ax.set_title('Tempo de Execução x Número de Cidades', fontsize=20)
-    ax.legend(loc='upper left', fontsize=20)
+    ax.legend(loc='upper right', fontsize=15)
     ax.tick_params(axis='x', labelsize=20)
     ax.tick_params(axis='y', labelsize=20)
     ax.grid(True)
