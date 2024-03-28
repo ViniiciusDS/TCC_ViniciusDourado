@@ -3,8 +3,7 @@
 import numpy as np  # Importar a biblioteca numpy
 import pandas as pd  # Importar a biblioteca pandas
 import matplotlib.pyplot as plt  # Importar a biblioteca matplotlib
-from scipy.stats import ttest_rel  # type: ignore # Importar a função ttest_rel
-from forca_bruta import forcabruta  # Importar a função forcabruta
+from busca_exaustiva import buscaexaustiva  # Importar a função buscaexaustiva
 from alggenetico import alggenetico  # Importar a função alggenetico
 # Importar a função simulatedAnnealing
 from simulatedAnnealing import simulated_annealing
@@ -13,7 +12,7 @@ import argparse
 
 
 def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_cidades: int,
-                          exec_forca_bruta: bool, exec_alg_genetico: bool,
+                          exec_busca_exaustiva: bool, exec_alg_genetico: bool,
                           exec_simulated_annealing: bool, inicio_aumento: int, fim_aumento: int,
                           tam_pop_ini_ag: int, tam_gera_ag: int, num_int_sa: int,
                           temp_ini_sa: float, taxa_resfriamento_sa: float, tx_mutacao: float,
@@ -23,7 +22,7 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
     tic_total = time.time()
 
     # Variáveis
-    metodos = ['Força Bruta', 'Algoritmo Genético', 'Simulated Annealing']
+    metodos = ['Busca Exaustiva', 'Algoritmo Genético', 'Simulated Annealing']
 
     # Carregar matrizes de dados
     DistMatriz = pd.DataFrame(np.zeros((16, 16)))
@@ -39,12 +38,12 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
     aumentar_cidades = incrementar_cidades
     num_cidades_fixo = num_cidades  # Número de cidades fixo
     # 1 para executar, 0 para não executar
-    executar_forca_bruta = exec_forca_bruta
+    executar_busca_exaustiva = exec_busca_exaustiva
     # 1 para executar, 0 para não executar
     executar_alg_genetico = exec_alg_genetico
     # 1 para executar, 0 para não executar
     executar_simulated_annealing = exec_simulated_annealing
-    execute_control = executar_alg_genetico + executar_forca_bruta + \
+    execute_control = executar_alg_genetico + executar_busca_exaustiva + \
         executar_simulated_annealing  # Variável de controle para o teste t de Student
     ttest_control = 0  # 1 para executar, 0 para não executar
 
@@ -84,12 +83,12 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
         # MatrizTempTrab = TempMatriz.iloc[indi_random, indi_random].values
 
         # Executar Força Bruta se a variável de controle estiver definida como 1
-        if executar_forca_bruta:
-            resultados_forca_bruta = forcabruta(MatrizDistTrab)
-            tempoFB = resultados_forca_bruta['tempoFB']
-            menordistFB = resultados_forca_bruta['distanciamenor']
-            Tab_Resultados_tempo[sim, 0] = tempoFB
-            Tab_Resultados_dist[sim, 0] = menordistFB
+        if executar_busca_exaustiva:
+            resultados_busca_exaustiva = buscaexaustiva(MatrizDistTrab)
+            tempoBE = resultados_busca_exaustiva['tempoBE']
+            menordistBE = resultados_busca_exaustiva['distanciamenor']
+            Tab_Resultados_tempo[sim, 0] = tempoBE
+            Tab_Resultados_dist[sim, 0] = menordistBE
 
         # Executar Algoritmo Genético se a variável de controle estiver definida como 1
         if executar_alg_genetico:
@@ -208,13 +207,13 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
 
     # Cria o Dicionário dos resultados
     resultados_para_interface = {
-        "Força Bruta": {
+        "Busca Exaustiva": {
             "media_tempo": Resultados_Final_tempo[0],
             "desvio_padrao_tempo": np.std(Tab_Resultados_tempo[:, 0]),
-            "Menor Rota": resultados_forca_bruta['Rota_menor']
-            if 'resultados_forca_bruta' in locals() else None,
-            "Menor Distância": resultados_forca_bruta['distanciamenor']
-            if 'resultados_forca_bruta' in locals() else None
+            "Menor Rota": resultados_busca_exaustiva['Rota_menor']
+            if 'resultados_busca_exaustiva' in locals() else None,
+            "Menor Distância": resultados_busca_exaustiva['distanciamenor']
+            if 'resultados_busca_exaustiva' in locals() else None
 
         },
         "Algoritmo Genético": {
@@ -238,31 +237,6 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
 
     }
 
-    if ttest_control == 1:
-        if execute_control >= 2:
-            # Realize um teste t de Student pareado (duas amostras relacionadas)
-            # ttest_fb = ttest_rel(
-            # Tab_Resultados_tempo[:, 0], Resultados_Final_tempo[0])
-            # ttest_ag = ttest_rel(
-            # Tab_Resultados_tempo[:, 1], Resultados_Final_tempo[1])
-            # if execute_control == 3:
-            # ttest_sa = ttest_rel(
-            # Tab_Resultados_tempo[:, 2], Resultados_Final_tempo[2])
-
-            # Obtenha o valor-p do teste t
-            p_value = ttest_rel(
-                Tab_Resultados_tempo[:, 1], Tab_Resultados_tempo[:, 2])
-            # Exiba o resultado do teste t
-            print('Valor-p do teste t de Student:', p_value)
-
-            # Verifique se o valor-p é menor que o nível de significância desejado (0,2)
-            nivel_significancia = 0.2
-            if p_value < nivel_significancia:
-                print(
-                    'Rejeita a hipótese nula: Existe uma diferença significativa entre os métodos.')
-            else:
-                print('Não rejeita a hipótese nula: Não há evidência suficiente para concluir'
-                      'que existe uma diferença significativa entre os métodos.')
     return resultados_para_interface
 
 
@@ -273,7 +247,7 @@ if __name__ == '__main__':
     argparser.add_argument('incrementar_cidades',
                            type=bool, help='Incrementar cidades')
     argparser.add_argument('num_cidades', type=int, help='Número de cidades')
-    argparser.add_argument('exec_forca_bruta', type=bool,
+    argparser.add_argument('exec_busca_exaustiva', type=bool,
                            help='Executar Força Bruta')
     argparser.add_argument('exec_alg_genetico', type=bool,
                            help='Executar Algoritmo Genético')
@@ -286,7 +260,7 @@ if __name__ == '__main__':
 
     # Executar o programa principal
     calcute_metodos_param(args.arquivo_matriz, args.incrementar_cidades, args.num_cidades,
-                          args.exec_forca_bruta, args.exec_alg_genetico,
+                          args.exec_busca_exaustiva, args.exec_alg_genetico,
                           args.exec_simulated_annealing, args.inicio_aumento, args.fim_aumento,
                           args.tam_pop_ini_ag, args.tam_gera_ag, args.num_int_sa,
                           args.temp_ini_sa, args.taxa_resfriamento_sa, args.tx_mutacao,

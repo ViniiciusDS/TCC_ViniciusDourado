@@ -39,7 +39,7 @@ class InterfaceGrafica:
         self.num_cidades = tk.StringVar()
         self.matriz_file_path = tk.StringVar()
         self.incrementar_cidades = tk.BooleanVar(value=False)
-        self.executar_forca_bruta = tk.BooleanVar(value=True)
+        self.executar_busca_exaustiva = tk.BooleanVar(value=True)
         self.executar_alg_genetico = tk.BooleanVar(value=True)
         self.executar_simulated_annealing = tk.BooleanVar(value=True)
         self.num_cidades_inicio = tk.StringVar()
@@ -60,14 +60,14 @@ class InterfaceGrafica:
         self.label_tempo = tk.Label(self.root, text="Tempo de Execução:")
         self.label_tempo.grid(row=18, column=1)
 
-        # Aba Menor Rota e km Força Bruta
-        self.label_menor_rota_fb = tk.Label(
-            self.root, text="Menor Rota Força Bruta:")
-        self.label_menor_rota_fb.grid(row=5, column=4)
+        # Aba Menor Rota e km Busca exaustiva
+        self.label_menor_rota_be = tk.Label(
+            self.root, text="Menor Rota Busca Exaustiva:")
+        self.label_menor_rota_be.grid(row=5, column=4)
 
-        self.label_menor_rota_fb_texto = tk.Label(
-            self.root, text="Menor Rota Força Bruta:")
-        self.label_menor_rota_fb_texto.grid(row=3, column=5)
+        self.label_menor_rota_be_texto = tk.Label(
+            self.root, text="Menor Rota Busca exaustiva:")
+        self.label_menor_rota_be_texto.grid(row=3, column=5)
 
         # Aba Menor Rota e km Algoritmo Genético
         self.label_menor_rota_ag = tk.Label(
@@ -87,13 +87,13 @@ class InterfaceGrafica:
             self.root, text="Menor Rota Simulated Annealing:")
         self.label_menor_rota_sa_texto.grid(row=3, column=7)
 
-        # Adiciona uma variável de controle para a menor rota e km da força bruta
-        self.menor_rota_fb = tk.StringVar()
-        self.menor_rota_fb.set("[0]")
+        # Adiciona uma variável de controle para a menor rota e km da Busca exaustiva
+        self.menor_rota_be = tk.StringVar()
+        self.menor_rota_be.set("[0]")
         self.km_fb = tk.StringVar()
         self.km_fb.set("0")
-        self.menor_rota_fb_texto = tk.StringVar()
-        self.menor_rota_fb_texto.set("[0]")
+        self.menor_rota_be_texto = tk.StringVar()
+        self.menor_rota_be_texto.set("[0]")
 
         # Adiciona uma variável de controle para a menor rota e km do algoritmo genético
         self.menor_rota_ag = tk.StringVar()
@@ -120,16 +120,16 @@ class InterfaceGrafica:
             self.root, textvariable=self.tempo_execucao)
         self.label_tempo_real.grid(row=18, column=2)
 
-        # Exibição dinâmica da menor rota e km da força bruta
-        self.label_menor_rota_fb_real = tk.Label(
-            self.root, textvariable=self.menor_rota_fb)
-        self.label_menor_rota_fb_real.grid(row=6, column=4)
+        # Exibição dinâmica da menor rota e km da Busca exaustiva
+        self.label_menor_rota_be_real = tk.Label(
+            self.root, textvariable=self.menor_rota_be)
+        self.label_menor_rota_be_real.grid(row=6, column=4)
         self.label_km_fb_real = tk.Label(
             self.root, textvariable=self.km_fb)
         self.label_km_fb_real.grid(row=7, column=4)
-        self.label_menor_rota_fb_texto_real = tk.Label(
-            self.root, textvariable=self.menor_rota_fb_texto)
-        self.label_menor_rota_fb_texto_real.grid(
+        self.label_menor_rota_be_texto_real = tk.Label(
+            self.root, textvariable=self.menor_rota_be_texto)
+        self.label_menor_rota_be_texto_real.grid(
             row=5, column=5, rowspan=10, columnspan=1)
 
         # Exibição dinâmica da menor rota e km do algoritmo genético
@@ -284,7 +284,7 @@ class InterfaceGrafica:
         label_metodos.grid(row=14, column=0)
 
         checkbox_forca_bruta = tk.Checkbutton(
-            self.root, text="Força Bruta", variable=self.executar_forca_bruta)
+            self.root, text="Busca exaustiva", variable=self.executar_busca_exaustiva)
         checkbox_forca_bruta.grid(row=15, column=0)
 
         checkbox_alg_genetico = tk.Checkbutton(
@@ -359,7 +359,7 @@ class InterfaceGrafica:
         start_time = time.time()
 
         # Convertendo para string
-        executar_forca_bruta = self.executar_forca_bruta.get()
+        executar_busca_exaustiva = self.executar_busca_exaustiva.get()
         # Convertendo para string
         executar_alg_genetico = self.executar_alg_genetico.get()
         # Convertendo para string
@@ -369,7 +369,7 @@ class InterfaceGrafica:
 
         # Capturar a saída do programa principal
         resultados_tcc = calcute_metodos_param(matriz_file_path, incrementar_cidades, num_cidades,
-                                               executar_forca_bruta, executar_alg_genetico,
+                                               executar_busca_exaustiva, executar_alg_genetico,
                                                executar_simulated_annealing, inicio_aumento,
                                                fim_aumento, tam_pop_ini_ag, tam_gera_ag, num_int_sa,
                                                temp_ini_sa, taxa_resfriamento_sa, tx_mutacao_ag,
@@ -387,7 +387,7 @@ class InterfaceGrafica:
             self.resultados_text.insert(
                 tk.END, f"Desvio Padrão do Tempo: {dados['desvio_padrao_tempo']} segundos\n\n")
 
-        # Atualizando a menor rota da força bruta
+        # Atualizando a menor rota da Busca exaustiva
         atualizar_rotas(self, resultados_tcc)
         atualizar_nomes_cidades(self, resultados_tcc, matriz_file_path)
 
@@ -401,10 +401,10 @@ class InterfaceGrafica:
 
 def atualizar_rotas(self, resultados):
     # Lógica para atualizar as rotas na interface
-    self.menor_rota_fb.set(
-        f"{resultados['Força Bruta']['Menor Rota']}")
+    self.menor_rota_be.set(
+        f"{resultados['Busca Exaustiva']['Menor Rota']}")
     self.km_fb.set(
-        f"{resultados['Força Bruta']['Menor Distância']} km")
+        f"{resultados['Busca Exaustiva']['Menor Distância']} km")
 
     self.menor_rota_ag.set(
         f"{resultados['Algoritmo Genético']['Menor Rota']}")
@@ -430,14 +430,15 @@ def atualizar_nomes_cidades(self, resultados, matriz_file_path):
     numeracao_cidades = [str(i) + " - " + nome for i,
                          nome in enumerate(nomes_cidades)]
 
-    # Atualizando os nomes das cidades na interface para a melhor rota da força bruta
-    if self.executar_forca_bruta.get() and resultados['Força Bruta'] is not None:
+    # Atualizando os nomes das cidades na interface para a melhor rota da Busca exaustiva
+    if self.executar_busca_exaustiva.get() and resultados['Busca Exaustiva'] is not None:
         melhor_rota_fb = [int(idx)
-                          for idx in resultados['Força Bruta']['Menor Rota']]
+                          for idx in resultados['Busca Exaustiva']['Menor Rota']]
         nomes_cidades_fb = [numeracao_cidades[i] for i in melhor_rota_fb]
-        self.menor_rota_fb_texto.set("\n".join(nomes_cidades_fb))
+        self.menor_rota_be_texto.set("\n".join(nomes_cidades_fb))
     else:
-        self.menor_rota_fb_texto.set("")   # Limpar a menor rota da força bruta
+        # Limpar a menor rota da Busca exaustiva
+        self.menor_rota_be_texto.set("")
 
     # Atualizando os nomes das cidades na interface para a melhor rota do algoritmo genético
     if self.executar_alg_genetico.get() and resultados['Algoritmo Genético'] is not None:

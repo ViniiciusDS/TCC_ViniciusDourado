@@ -1,15 +1,15 @@
-"""Função força bruta em python versão 1."""
+"""Função Busca exaustiva em python versão 1."""
 
 import time  # Import the 'time' module
 from itertools import permutations
 import numpy as np
 
 
-""" Core para executar o algoritmo de força bruta."""
+""" Core para executar o algoritmo de Busca exaustiva."""
 
 
-def forcabruta(MatrizDistTrab):
-    tempoFB = time.time()
+def buscaexaustiva(MatrizDistTrab):
+    tempoBE = time.time()
     DistMatriz = MatrizDistTrab
 
     VetorIndi = np.arange(1, DistMatriz.shape[0]+1)
@@ -58,15 +58,15 @@ def forcabruta(MatrizDistTrab):
 
     # Obtém a rota com maior distância (desconsiderando a cidade de partida duplicada)
     Rota_maior = Pi[Indice_Rota_maior, :]
-    tempoFB = time.time() - tempoFB
+    tempoBE = time.time() - tempoBE
     # Preparando a saída da função
-    FB_func = {}
-    FB_func['distanciamenor'] = distanciamenor
-    FB_func['Indice_Rota_menor'] = Indice_Rota_menor
-    FB_func['Rota_menor'] = Rota_menor
-    FB_func['distanciamaior'] = distanciamaior
-    FB_func['Indice_Rota_maior'] = Indice_Rota_maior
-    FB_func['Rota_maior'] = Rota_maior
-    FB_func['tempoFB'] = tempoFB
+    BE_func = {}
+    BE_func['distanciamenor'] = distanciamenor
+    BE_func['Indice_Rota_menor'] = Indice_Rota_menor
+    BE_func['Rota_menor'] = Rota_menor
+    BE_func['distanciamaior'] = distanciamaior
+    BE_func['Indice_Rota_maior'] = Indice_Rota_maior
+    BE_func['Rota_maior'] = Rota_maior
+    BE_func['tempoBE'] = tempoBE
 
-    return FB_func
+    return BE_func
