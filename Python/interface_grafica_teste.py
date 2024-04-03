@@ -62,29 +62,29 @@ class InterfaceGrafica:
 
         # Aba Menor Rota e km Busca exaustiva
         self.label_menor_rota_be = tk.Label(
-            self.root, text="Menor Rota Busca Exaustiva:")
+            self.root, text="Menor Rota \nBusca Exaustiva:")
         self.label_menor_rota_be.grid(row=5, column=4)
 
         self.label_menor_rota_be_texto = tk.Label(
-            self.root, text="Menor Rota Busca exaustiva:")
+            self.root, text="Menor Rota \nBusca exaustiva:")
         self.label_menor_rota_be_texto.grid(row=3, column=5)
 
         # Aba Menor Rota e km Algoritmo Genético
         self.label_menor_rota_ag = tk.Label(
-            self.root, text="Menor Rota Algoritmo Genético:")
+            self.root, text="Menor Rota \nAlgoritmo Genético:")
         self.label_menor_rota_ag.grid(row=8, column=4)
 
         self.label_menor_rota_ag_texto = tk.Label(
-            self.root, text="Menor Rota Algoritmo Genético:")
+            self.root, text="Menor Rota \nAlgoritmo Genético:")
         self.label_menor_rota_ag_texto.grid(row=3, column=6)
 
         # Aba Menor Rota e km Simulated Annealing
         self.label_menor_rota_sa = tk.Label(
-            self.root, text="Menor Rota Simulated Annealing:")
+            self.root, text="Menor Rota \nSimulated Annealing:")
         self.label_menor_rota_sa.grid(row=11, column=4)
 
         self.label_menor_rota_sa_texto = tk.Label(
-            self.root, text="Menor Rota Simulated Annealing:")
+            self.root, text="Menor Rota \nSimulated Annealing:")
         self.label_menor_rota_sa_texto.grid(row=3, column=7)
 
         # Adiciona uma variável de controle para a menor rota e km da Busca exaustiva

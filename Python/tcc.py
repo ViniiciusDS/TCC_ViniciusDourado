@@ -112,23 +112,30 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
     Resultados_Final_tempo = np.mean(Tab_Resultados_tempo, axis=0)
 
     # Crie um gráfico de linha para cada método
+    # Defina os estilos de linha para cada método
+    styles = ['-', '--', '-.']
+
     fig, ax = plt.subplots(
         ncols=1, nrows=1, layout='tight', figsize=(5.5, 5.28))
     if aumentar_cidades:
         for i in range(3):
             ax.plot(
-                num_cidades_vec, Tab_Resultados_tempo[:, i], '-o', label=metodos[i], linewidth=5)
+                num_cidades_vec, Tab_Resultados_tempo[:,
+                                                      i], linestyle=styles[i],
+                marker='o', label=metodos[i], linewidth=5)
     else:
         for i in range(3):
             ax.plot(range(1, n_simulacoes + 1),
-                    Tab_Resultados_tempo[:, i], '-o', label=metodos[i], linewidth=5)
+                    Tab_Resultados_tempo[:,
+                                         i],  linestyle=styles[i], marker='o',
+                    label=metodos[i], linewidth=5)
     if aumentar_cidades == 1:
         ax.set_xlabel('Número de Cidades', fontsize=20)
     else:
         ax.set_xlabel('Simulação', fontsize=20)
     ax.set_ylabel('Tempo de Execução (segundos)', fontsize=20)
     ax.set_title('Tempo de Execução x Número de Cidades', fontsize=20)
-    ax.legend(loc='upper right', fontsize=15)
+    ax.legend(loc='upper right', fontsize=13)
     ax.tick_params(axis='x', labelsize=20)
     ax.tick_params(axis='y', labelsize=20)
     ax.grid(True)
@@ -139,14 +146,18 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
         ncols=1, nrows=1, layout='tight', figsize=(5.5, 5.28))
     if aumentar_cidades:
         ax1.plot(num_cidades_vec,
-                 Tab_Resultados_tempo[:, 1], '-o', label='Algoritmo Genético', linewidth=5)
+                 Tab_Resultados_tempo[:, 1], linestyle='-', marker='o',
+                 label='Algoritmo Genético', linewidth=5)
         ax1.plot(num_cidades_vec,
-                 Tab_Resultados_tempo[:, 2], '-o', label='Simulated Annealing', linewidth=5)
+                 Tab_Resultados_tempo[:, 2], linestyle='--', marker='o',
+                 label='Simulated Annealing', linewidth=5)
     else:
         ax1.plot(range(1, n_simulacoes + 1),
-                 Tab_Resultados_tempo[:, 1], '-o', label='Algoritmo Genético', linewidth=5)
+                 Tab_Resultados_tempo[:, 1], linestyle='-', marker='o',
+                 label='Algoritmo Genético', linewidth=5)
         ax1.plot(range(1, n_simulacoes + 1),
-                 Tab_Resultados_tempo[:, 2], '-o', label='Simulated Annealing', linewidth=5)
+                 Tab_Resultados_tempo[:, 2], linestyle='--', marker='o',
+                 label='Simulated Annealing', linewidth=5)
     if aumentar_cidades:
         ax1.set_xlabel('Número de Cidades', fontsize=20)
     else:
