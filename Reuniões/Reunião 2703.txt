@@ -1,0 +1,38 @@
+melhorar os fluxograma mais visivel - FEITO
+
+
+Entrevista para refirnar o modelo - titulo - FEITO
+
+
+explicar pq o orientador recomendeu este restaurante  - FEITO
+
+dividir em dois quadros as respostas - FEITO
+
+quandro 4 - (Cont.)
+ou
+quadro 3 primeira parte das perguntas
+quadro 4 segunda parte das perguntas
+
+
+interface grafica encurtar a janela - FEITO
+menor rota
+força bruta
+resultados \/
+
+
+mudar força bruta para busca exaustiva em todos até no código - FEITO
+
+divir a figura final em duas partes tbm FEITO
+
+mostrar os pontos (nomes) em outra figura FEITO
+
+mudar os gráficos para tracejado caso alguem imprima - para se n sair colorido a pessoa identificar  - FEITO
+
+evitar legenda cobrindo resultados - FEITO
+
+Conclusões e sugestões de trabalhos futuros 
+
+4.4 - Discussões finais - falar qual e melhor 
+
+5.5 - responder os objetivos gerais e especificos
+
