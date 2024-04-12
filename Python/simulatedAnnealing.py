@@ -1,35 +1,37 @@
+"""Funcao Simulated Annealing em python versao 1."""
 import numpy as np
 import time
 
+""" Core para executar o algoritmo do Simulated Annealing."""
 
 def simulated_annealing(matriz_distancia, temperatura_inicial, taxa_resfriamento, num_iteracoes):
     tempo_sa = time.time()
     num_cidades = matriz_distancia.shape[0]
 
-    # Gera a solução inicial aleatória
+    # Gera a solucao inicial aleatoria
     cidades_aleatorias = np.random.permutation(np.arange(2, num_cidades+1))
-    # Solução inicial aleatória
+    # Solucao inicial aleatoria
     melhor_rota = np.concatenate(([1], cidades_aleatorias, [1]))
     melhor_custo = calcular_custo_rota(melhor_rota, matriz_distancia)
 
-    # Variáveis para parâmetro de comparação
+    # Variaveis para parametro de comparacao
     rota_atual = melhor_rota.copy()
     custo_atual = melhor_custo
 
     for iteracao in range(num_iteracoes):
-        # Gera uma nova solução vizinha alterando aleatoriamente a solução atual
+        # Gera uma nova solucao vizinha alterando aleatoriamente a solucao atual
         nova_rota = gerar_nova_rota_vizinha(rota_atual)
         novo_custo = calcular_custo_rota(nova_rota, matriz_distancia)
 
-        # Calcula a diferença de custo entre a nova solução e a solução atual
+        # Calcula a diferenca de custo entre a nova solucao e a solucao atual
         delta_custo = novo_custo - custo_atual
 
-        # Aceita a nova solução se ela for melhor ou com uma certa probabilidade se for pior
+        # Aceita a nova solucao se ela for melhor ou com uma certa probabilidade se for pior
         if delta_custo < 0 or np.random.rand() < np.exp(-delta_custo / temperatura_inicial):
             rota_atual = nova_rota.copy()
             custo_atual = novo_custo
 
-            # Atualiza a melhor solução encontrada
+            # Atualiza a melhor solucao encontrada
             if custo_atual < melhor_custo:
                 melhor_rota = rota_atual
                 melhor_custo = custo_atual
@@ -43,7 +45,7 @@ def simulated_annealing(matriz_distancia, temperatura_inicial, taxa_resfriamento
     # Converte os elementos da rota para ponto flutuante
     melhor_rota = melhor_rota.astype(float)
 
-    # Preparando a saída da função
+    # Preparando a saida da funcao
     sa_func = {}
     sa_func['tempo'] = tempo_sa
     sa_func['menorDistancia'] = melhor_custo
@@ -59,7 +61,7 @@ def calcular_custo_rota(rota, matriz_distancia):
 
     for i in range(num_cidades-1):
         cidade_atual = rota[i]
-        # Próxima cidade considerando rota circular
+        # Proxima cidade considerando rota circular
         cidade_proxima = rota[(i+1) % num_cidades]
         custo += matriz_distancia[cidade_atual-1, cidade_proxima-1]
 
@@ -67,7 +69,7 @@ def calcular_custo_rota(rota, matriz_distancia):
 
 
 def gerar_nova_rota_vizinha(rota_atual):
-    # Gera uma nova solução vizinha alterando aleatoriamente a solução atual
+    # Gera uma nova solucao vizinha alterando aleatoriamente a solucao atual
     num_cidades = len(rota_atual)
     indice1, indice2 = np.random.choice(
         range(1, num_cidades-1), 2, replace=False)

@@ -1,10 +1,10 @@
-"""Arquivo para método Algortimo Genético"""
+"""Arquivo para metodo Algortimo Genetico de Selecao Simples"""
 import numpy as np
 from Calc_func import Calc_Dist
 import time
 
 
-""" Função para executar o algoritmo genético """
+""" Funcao para executar o algoritmo genetico """
 
 
 def alggenetico(MatrizDistTrab, tam_Pop_ini, tam_gera, tx_mutacao):
@@ -13,12 +13,12 @@ def alggenetico(MatrizDistTrab, tam_Pop_ini, tam_gera, tx_mutacao):
 
     numCidades = len(DistMatriz)
 
-    # Criando as variáveis para economizar memória
+    # Criando as variaveis para economizar memoria
     Populacao = np.zeros((tam_Pop_ini, (numCidades+1)))
     nmr_filhos = np.zeros(((tam_Pop_ini-2), (numCidades+1)))
     Percurso = np.zeros((tam_Pop_ini, tam_gera))
 
-    # Criando a população inicial
+    # Criando a populacao inicial
     for k in range(tam_Pop_ini):
         cidades_aleatorias = np.random.choice(np.setdiff1d(
             np.arange(2, numCidades+1), [1]), size=numCidades-1, replace=False)
@@ -58,15 +58,15 @@ def alggenetico(MatrizDistTrab, tam_Pop_ini, tam_gera, tx_mutacao):
         FilhosPai = np.zeros((palim, (numCidades+1)))
         FilhosMae = np.zeros((malim, (numCidades+1)))
 
-        # Criando os filhos por permutação e aplicando mutação
+        # Criando os filhos por permutacao e aplicando mutacao
         for pa in range(palim):
-            # Selecionado os indíces para a troca de cidades
+            # Selecionado os indices para a troca de cidades
             b = np.random.permutation(np.arange(1, numCidades))[:2]
             FilhosPai[pa, :] = Pai
             FilhosPai[pa, b[0]] = Pai[0, b[1]]
             FilhosPai[pa, b[1]] = Pai[0, b[0]]
 
-            # Aplicando a Mutação com base na probabilidade
+            # Aplicando a Mutacao com base na probabilidade
             if np.random.rand() < tx_mutacao:
                 m = np.random.permutation(np.arange(1, numCidades))[:2]
                 FilhosPai[pa, :] = Pai
@@ -74,20 +74,20 @@ def alggenetico(MatrizDistTrab, tam_Pop_ini, tam_gera, tx_mutacao):
                 FilhosPai[pa, m[1]] = Pai[0, m[0]]
 
         for ma in range(malim):
-            # Selecionado os indíces para a troca de cidades
+            # Selecionado os indices para a troca de cidades
             b = np.random.permutation(np.arange(1, numCidades))[:2]
             FilhosMae[ma, :] = Mae
             FilhosMae[ma, b[0]] = Mae[0, b[1]]
             FilhosMae[ma, b[1]] = Mae[0, b[0]]
 
-            # Aplicando a Mutação com base na probabilidade
+            # Aplicando a Mutacao com base na probabilidade
             if np.random.rand() < tx_mutacao:
                 m = np.random.permutation(np.arange(1, numCidades))[:2]
                 FilhosMae[ma, :] = Mae
                 FilhosMae[ma, m[0]] = Mae[0, m[1]]
                 FilhosMae[ma, m[1]] = Mae[0, m[0]]
 
-        #   Formando a nova população
+        #   Formando a nova populacao
         Populacao = np.concatenate((Pai, Mae, FilhosPai, FilhosMae))
 
     tempoAG = time.time() - tempoAG
