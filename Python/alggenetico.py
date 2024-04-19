@@ -23,7 +23,7 @@ def alggenetico(MatrizDistTrab, tam_Pop_ini, tam_gera, tx_mutacao):
         cidades_aleatorias = np.random.choice(np.setdiff1d(
             np.arange(2, numCidades+1), [1]), size=numCidades-1, replace=False)
 
-        Populacao[k, :] = np.concatenate(([1], cidades_aleatorias, [1]))
+        Populacao[k, :] = np.concatenate(([0], cidades_aleatorias, [0]))
 
     # Calculando o percurso
     for g in range(tam_gera):

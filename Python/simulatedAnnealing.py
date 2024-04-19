@@ -11,7 +11,7 @@ def simulated_annealing(matriz_distancia, temperatura_inicial, taxa_resfriamento
     # Gera a solucao inicial aleatoria
     cidades_aleatorias = np.random.permutation(np.arange(2, num_cidades+1))
     # Solucao inicial aleatoria
-    melhor_rota = np.concatenate(([1], cidades_aleatorias, [1]))
+    melhor_rota = np.concatenate(([0], cidades_aleatorias, [0]))
     melhor_custo = calcular_custo_rota(melhor_rota, matriz_distancia)
 
     # Variaveis para parametro de comparacao

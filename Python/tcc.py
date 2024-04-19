@@ -172,6 +172,8 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
     ax1.set_box_aspect(1)
 
     # Crie um gráfico de barras para as menores distâncias de todos os métodos
+    cores = ['black', 'gray', 'darkgray']
+
     fig2, ax2 = plt.subplots(
         ncols=1, nrows=1, layout='tight', figsize=(5.5, 5.28))
     largura_barra = 0.2
@@ -179,7 +181,7 @@ def calcute_metodos_param(arquivo_matriz: str, incrementar_cidades: bool, num_ci
     num_cidades_str = [str(num) for num in num_cidades_vec]
     for i in range(3):
         ax2.bar(posicoes + i * largura_barra,
-                Tab_Resultados_dist[:, i], width=largura_barra, label=metodos[i])
+                Tab_Resultados_dist[:, i], width=largura_barra, label=metodos[i], color=cores[i])
     ax2.set_xlabel('Número de Cidades', fontsize=20)
     ax2.set_ylabel('Distância', fontsize=20)
     ax2.set_title('Menor Distância x Número de Cidades', fontsize=20)

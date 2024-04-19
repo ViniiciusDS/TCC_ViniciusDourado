@@ -19,7 +19,7 @@ def buscaexaustiva(MatrizDistTrab):
 
     # Adicionar a cidade de partida no inicio de cada permutacao
     Pi = np.concatenate(
-        (np.ones((len(Pi), 1)), Pi, np.ones((len(Pi), 1))), axis=1)
+        (np.ones((len(Pi), 0)), Pi, np.ones((len(Pi), 0))), axis=1)
 
     # Variavel da Distancia
     distanciamenor = np.inf
